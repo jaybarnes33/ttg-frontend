@@ -30,7 +30,7 @@ const SignIn = () => {
               placeholder="Email"
               value={email}
               onChangeText={setEmail}
-              border
+              className="rounded border border-neutral-300"
               keyboardType="email-address"
               autoCapitalize="none"
             />
@@ -41,7 +41,7 @@ const SignIn = () => {
             <Input
               placeholder="Password"
               value={password}
-              border
+              className="rounded border border-neutral-300"
               onChangeText={setPassword}
               secureTextEntry
             />
