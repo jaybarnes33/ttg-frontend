@@ -1,5 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useFocusEffect, useRouter } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 
@@ -25,6 +25,8 @@ const Alerts = () => {
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const { id } = useLocalSearchParams();
+
   const { navigate } = useRouter();
   useFocusEffect(
     useCallback(() => {
@@ -33,6 +35,16 @@ const Alerts = () => {
       return undefined;
     }, [])
   );
+
+  useEffect(() => {
+    if (id) {
+      console.log('id', id);
+      const index = alerts.findIndex((alert) => alert.id === id);
+      setCurrentIndex(index);
+      setActiveItem(alerts[index]);
+      setEditMode(true);
+    }
+  }, [id, alerts]);
 
   useEffect(() => {
     if (alerts.length > 0) {

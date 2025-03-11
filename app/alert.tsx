@@ -40,6 +40,12 @@ const AlertScreen = () => {
       { cancelable: true }
     );
   };
+  const handleEdit = () => {
+    router.push({
+      pathname: '/alerts',
+      params: { id: parsed.id },
+    });
+  };
 
   const bottom = [
     {
@@ -50,7 +56,7 @@ const AlertScreen = () => {
     {
       icon: <EditAlert />,
       text: 'Edit Alert',
-      onPress: () => setIsSilent(!isSilent),
+      onPress: handleEdit,
     },
     {
       icon: <Delete />,
