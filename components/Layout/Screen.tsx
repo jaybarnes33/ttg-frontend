@@ -18,8 +18,8 @@ const Screen = ({ children }: { children: React.ReactNode }) => {
     router.push(next);
   };
   return (
-    <LinearGradient colors={['#22B3AB', '#D9FBFC']} style={{ flex: 1, zIndex: 9999 }}>
-      <SafeAreaView edges={['top']} style={{ flex: 1 }}>
+    <LinearGradient colors={['#22B3AB', '#D9FBFC']} style={{ flex: 1 }}>
+      <SafeAreaView className="pb-4" style={{ flex: 1 }}>
         <View className="flex-row items-center justify-between px-3">
           <TouchableOpacity onPress={() => router.back()}>
             <Chevron direction="left" size={scale(30)} color="white" />
