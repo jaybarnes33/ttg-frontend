@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, TouchableOpacity, BackHandler, Platform } from 'react-native';
-import RNExitApp from 'react-native-exit-app';
+// import RNExitApp from 'react-native-exit-app';
 
 import Screen from '~/components/Layout/Screen';
 import { Alerts } from '~/components/icons/Alerts';
@@ -31,7 +31,7 @@ const Home = () => {
 
   const handleExitApp = () => {
     if (Platform.OS === 'ios') {
-      RNExitApp.exitApp();
+      // RNExitApp.exitApp();
     } else {
       BackHandler.exitApp();
     }
@@ -40,7 +40,7 @@ const Home = () => {
     <Screen>
       <View className="flex-1 ">
         {actions.map((action, index) => (
-          <View key={index} className={clsx(['mb-4  rounded-xl p-4 shadow-md'])}>
+          <View key={index} className={clsx(['mb-4  rounded-xl p-4 '])}>
             <View className=" items-center">
               <Text className="text-[36px] font-bold uppercase">{action.label}</Text>
               <TouchableOpacity onPress={action.onPress}>{action.icon}</TouchableOpacity>

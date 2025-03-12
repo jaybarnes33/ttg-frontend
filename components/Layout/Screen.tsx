@@ -3,6 +3,7 @@ import { usePathname, useRouter } from 'expo-router';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { scale } from 'react-native-size-matters';
 
 import Logo from '../Logo';
 import Chevron from '../icons/Chevron';
@@ -17,16 +18,16 @@ const Screen = ({ children }: { children: React.ReactNode }) => {
     router.push(next);
   };
   return (
-    <LinearGradient colors={['#22B3AB', '#D9FBFC']} style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
+    <LinearGradient colors={['#22B3AB', '#D9FBFC']} style={{ flex: 1, zIndex: 9999 }}>
+      <SafeAreaView edges={['top']} style={{ flex: 1 }}>
         <View className="flex-row items-center justify-between px-3">
           <TouchableOpacity onPress={() => router.back()}>
-            <Chevron direction="left" size={30} color="white" />
+            <Chevron direction="left" size={scale(30)} color="white" />
           </TouchableOpacity>
 
-          <Logo width={122.2} height={160.3} />
+          <Logo width={scale(100)} height={scale(100.3)} />
           <TouchableOpacity onPress={handleNext}>
-            <Chevron direction="right" size={30} color="white" />
+            <Chevron direction="right" size={scale(30)} color="white" />
           </TouchableOpacity>
         </View>
 

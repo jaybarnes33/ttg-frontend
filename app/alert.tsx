@@ -1,6 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
 import { getTide } from './alerts';
 
@@ -72,56 +73,90 @@ const AlertScreen = () => {
 
   return (
     <Screen>
-      <View className="m-4 flex-1 gap-y-4 border bg-[#E6A91A] px-4 py-4">
+      <View
+        style={{
+          margin: scale(16),
+          padding: scale(16),
+          gap: verticalScale(16),
+        }}
+        className="flex-1 border bg-[#E6A91A]">
         <View>
-          <Text className="text-center text-[30px] font-extrabold uppercase text-white">
+          <Text
+            style={{ fontSize: moderateScale(30) }}
+            className="text-center font-extrabold uppercase text-white">
             Location
           </Text>
-          <Text className="text-center text-5xl font-bold uppercase">{parsed.location}</Text>
+          <Text style={{ fontSize: moderateScale(48) }} className="text-center font-bold uppercase">
+            {parsed.location}
+          </Text>
         </View>
+
         <View>
-          <Text className="text-center text-[30px] font-extrabold uppercase text-white">
+          <Text
+            style={{ fontSize: moderateScale(30) }}
+            className="text-center font-extrabold uppercase text-white">
             Status
           </Text>
-          <Text className="text-center text-3xl font-bold uppercase ">Time to go: 48hrs</Text>
-          <Text className="text-center text-3xl font-bold uppercase ">Monday, June 4 - 6</Text>
+          <Text style={{ fontSize: moderateScale(24) }} className="text-center font-bold uppercase">
+            Time to go: 48hrs
+          </Text>
+          <Text style={{ fontSize: moderateScale(24) }} className="text-center font-bold uppercase">
+            Monday, June 4 - 6
+          </Text>
         </View>
-        <View className="mt-4 gap-y-2">
-          <Text className="text-center text-[40px] font-extrabold uppercase text-white">
+
+        <View style={{ marginTop: verticalScale(16), gap: verticalScale(8) }}>
+          <Text
+            style={{ fontSize: moderateScale(40) }}
+            className="text-center font-extrabold uppercase text-white">
             Forecast conditions
           </Text>
-          <View className="flex-row items-center justify-between ">
-            <Text className="text-2xl font-bold uppercase">Clear</Text>
+
+          <View className="flex-row items-center justify-between">
+            <Text style={{ fontSize: moderateScale(20) }} className="font-bold uppercase">
+              Clear
+            </Text>
             <Sun />
           </View>
-          <View className="flex-row items-center justify-between ">
-            <Text className="text-2xl font-bold uppercase">
+
+          <View className="flex-row items-center justify-between">
+            <Text style={{ fontSize: moderateScale(20) }} className="font-bold uppercase">
               MAX WIND - {parsed.threshold.maxWindSpeed}
             </Text>
             <Wind />
           </View>
-          <View className="flex-row items-center justify-between ">
-            <Text className="text-2xl font-bold uppercase">
+
+          <View className="flex-row items-center justify-between">
+            <Text style={{ fontSize: moderateScale(20) }} className="font-bold uppercase">
               Swells - {parsed.threshold.maxWaveHeight}
             </Text>
             <Swells />
           </View>
-          <View className="flex-row items-center justify-between ">
-            <Text className="text-2xl font-bold uppercase">
+
+          <View className="flex-row items-center justify-between">
+            <Text style={{ fontSize: moderateScale(20) }} className="font-bold uppercase">
               Tide - {getTide(parsed.threshold.tide ?? 0)} - 1PM
             </Text>
             <Tide />
           </View>
         </View>
       </View>
-      <View className="flex-row items-center justify-between px-4">
+
+      <View
+        style={{ paddingHorizontal: scale(16) }}
+        className="flex-row items-center justify-between">
         {bottom.map((item) => (
           <TouchableOpacity
             key={item.text}
-            className="flex-col items-center gap-x-2 gap-y-1"
+            style={{ gap: verticalScale(4) }}
+            className="flex-col items-center"
             onPress={item.onPress}>
             {item.icon}
-            <Text className="text-center font-bold uppercase">{item.text}</Text>
+            <Text
+              style={{ fontSize: moderateScale(14) }}
+              className="text-center font-bold uppercase">
+              {item.text}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>

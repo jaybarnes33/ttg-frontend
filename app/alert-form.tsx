@@ -1,6 +1,15 @@
 import { router, useFocusEffect } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from 'react-native';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
 import { alertStorage } from '../services/alertStorage';
 
@@ -56,73 +65,97 @@ const CreateAlert = () => {
 
   return (
     <Screen>
-      <View className="gap-y-5 px-4 py-6">
-        <Text className="text-center text-[41px] font-extrabold uppercase text-white">
-          ADD NEW ALERT
-        </Text>
-        <View>
-          <Input
-            name="Location"
-            className="text-center text-xl font-semibold"
-            placeholder="city, state"
-            value={location}
-            onChangeText={setLocation}
-          />
-
-          <Input
-            name="Activity"
-            className="text-center text-xl font-semibold"
-            placeholder="activity"
-            value={activity}
-            onChangeText={setActivity}
-          />
-        </View>
-
-        <SliderInput
-          label="Wind"
-          value={maxWindSpeed}
-          onChange={setMaxWindSpeed}
-          description={
-            <Text className="text-right text-lg font-semibold  uppercase ">
-              Max Wind - {maxWindSpeed} MPH
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+          <View className="gap-y-5 px-4" style={{ paddingVertical: verticalScale(6) }}>
+            <Text
+              style={{ fontSize: moderateScale(41) }}
+              className="text-center font-extrabold uppercase text-white">
+              ADD NEW ALERT
             </Text>
-          }
-        />
+            <View>
+              <Input
+                name="Location"
+                style={{ fontSize: moderateScale(20) }}
+                className="text-center font-semibold"
+                placeholder="city, state"
+                value={location}
+                onChangeText={setLocation}
+              />
 
-        <SliderInput
-          label="Wave"
-          value={maxWaveHeight}
-          onChange={setMaxWaveHeight}
-          description={
-            <Text className="text-right text-lg font-semibold  uppercase ">
-              Swells - {maxWaveHeight} ft
-            </Text>
-          }
-        />
-
-        <SliderInput
-          label="Tide"
-          value={tide}
-          onChange={setTide}
-          description={
-            <View className=" flex-row justify-between">
-              <Text className="ml-2 flex-1 text-right text-xl font-semibold uppercase  ">N/A</Text>
-              <Text className="ml-2 flex-1 text-right text-xl font-semibold uppercase  ">Low</Text>
-              <Text className="ml-2 flex-1 text-right text-xl font-semibold uppercase  ">MED</Text>
-              <Text className="ml-2 flex-1 text-right text-xl font-semibold uppercase  ">High</Text>
+              <Input
+                name="Activity"
+                style={{ fontSize: moderateScale(20) }}
+                className="text-center font-semibold"
+                placeholder="activity"
+                value={activity}
+                onChangeText={setActivity}
+              />
             </View>
-          }
-        />
 
-        <TouchableOpacity
-          className={`bg-button border-button mx-auto   rounded-xl border-2 px-2 py-1  ${saving ? 'opacity-50' : ''}`}
-          onPress={handleCreate}
-          disabled={saving || !location.trim()}>
-          <Text className="text-center text-2xl font-semibold uppercase text-white">
-            {saving ? 'Creating...' : 'Save'}
-          </Text>
-        </TouchableOpacity>
-      </View>
+            <SliderInput
+              label="Wind"
+              value={maxWindSpeed}
+              onChange={setMaxWindSpeed}
+              description={
+                <Text
+                  style={{ fontSize: moderateScale(18) }}
+                  className="text-right font-semibold uppercase">
+                  Max Wind - {maxWindSpeed} MPH
+                </Text>
+              }
+            />
+
+            <SliderInput
+              label="Wave"
+              value={maxWaveHeight}
+              onChange={setMaxWaveHeight}
+              description={
+                <Text
+                  style={{ fontSize: moderateScale(18) }}
+                  className="text-right font-semibold uppercase">
+                  Swells - {maxWaveHeight} ft
+                </Text>
+              }
+            />
+
+            <SliderInput
+              label="Tide"
+              value={tide}
+              onChange={setTide}
+              description={
+                <View className="flex-row justify-start">
+                  {['N/A', 'Low', 'MED', 'High'].map((text) => (
+                    <Text
+                      key={text}
+                      style={{ fontSize: moderateScale(18), width: moderateScale(25) }}
+                      className="ml-2 flex-1 text-right font-semibold uppercase">
+                      {text}
+                    </Text>
+                  ))}
+                </View>
+              }
+            />
+
+            <TouchableOpacity
+              style={{
+                paddingHorizontal: scale(8),
+                paddingVertical: verticalScale(4),
+              }}
+              className={`bg-button border-button mx-auto rounded-xl border-2 ${saving ? 'opacity-50' : ''}`}
+              onPress={handleCreate}
+              disabled={saving || !location.trim()}>
+              <Text
+                style={{ fontSize: moderateScale(24) }}
+                className="text-center font-semibold uppercase text-white">
+                {saving ? 'Creating...' : 'Save'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Screen>
   );
 };

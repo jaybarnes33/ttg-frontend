@@ -2,6 +2,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { moderateScale } from 'react-native-size-matters';
 
 import Input from '~/components/Input';
 import Screen from '~/components/Layout/Screen';
@@ -222,7 +223,9 @@ const Alerts = () => {
       ) : (
         <View className="flex-1">
           <View className="items-center py-4">
-            <Text className="text-[41px] font-extrabold text-white">ALERTS</Text>
+            <Text style={{ fontSize: moderateScale(41) }} className="font-extrabold text-white">
+              ALERTS
+            </Text>
           </View>
 
           {renderAlert()}
@@ -231,16 +234,20 @@ const Alerts = () => {
             {/* Indicators */}
             <View className="flex-row items-center justify-between gap-4 px-4 py-4">
               <TouchableOpacity disabled={currentIndex === 0} onPress={goToPrevious}>
-                <Chevron size={30} color={currentIndex === 0 ? 'grey' : 'black'} direction="left" />
+                <Chevron
+                  size={moderateScale(30)}
+                  color={currentIndex === 0 ? 'grey' : 'black'}
+                  direction="left"
+                />
               </TouchableOpacity>
               {[0, 1, 2, 3].map((index) => (
                 <TouchableOpacity
+                  key={index}
                   onPress={() =>
                     alerts.length - 1 >= index ? setCurrentIndex(index) : navigate('/alert-form')
                   }>
                   <AlertIcon
-                    size={40}
-                    key={index}
+                    size={moderateScale(40)}
                     state={
                       index < alerts.length
                         ? index === currentIndex
@@ -255,18 +262,21 @@ const Alerts = () => {
                 onPress={() =>
                   alerts.length - 1 >= currentIndex ? goToNext() : navigate('/alert-form')
                 }>
-                <Chevron size={30} direction="right" />
+                <Chevron size={moderateScale(30)} direction="right" />
               </TouchableOpacity>
             </View>
             <View className="flex-row justify-evenly">
               <TouchableOpacity onPress={handleEdit}>
-                <Text className="text-[26px] font-bold uppercase text-black">
+                <Text
+                  style={{ fontSize: moderateScale(26) }}
+                  className="font-bold uppercase text-black">
                   {editMode ? 'CANCEL' : 'EDIT'}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleSave} disabled={!editMode || !hasChanges()}>
                 <Text
-                  className={`text-[26px] font-bold uppercase ${
+                  style={{ fontSize: moderateScale(26) }}
+                  className={`font-bold uppercase ${
                     editMode && hasChanges() ? 'text-black' : 'text-gray-400'
                   }`}>
                   SAVE
