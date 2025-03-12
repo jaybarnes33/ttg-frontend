@@ -3,8 +3,8 @@ import Svg, { Defs, G, Image, Use } from 'react-native-svg';
 const Surfer = () => {
   return (
     <Svg
-      width="250.4px"
-      height="346.5px"
+      width="133.4px"
+      height="256.5px"
       viewBox="0 0 145 268"
       fillRule="evenodd"
       clipRule="evenodd"

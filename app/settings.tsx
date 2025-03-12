@@ -36,7 +36,7 @@ const Settings = () => {
           </View>
         ))}
       </View>
-      <View className="mt-auto scale-105 items-center">
+      <View className="mt-auto  items-center">
         <Surfer />
       </View>
     </Screen>
