@@ -75,9 +75,11 @@ const AlertScreen = () => {
     <Screen>
       <View
         style={{
-          margin: scale(16),
-          padding: scale(16),
-          gap: verticalScale(16),
+          marginHorizontal: scale(16),
+          marginVertical: verticalScale(8),
+          paddingVertical: scale(8),
+          paddingHorizontal: scale(16),
+          gap: verticalScale(10),
         }}
         className="flex-1 border bg-[#E6A91A]">
         <View>
@@ -105,9 +107,9 @@ const AlertScreen = () => {
           </Text>
         </View>
 
-        <View style={{ marginTop: verticalScale(16), gap: verticalScale(8) }}>
+        <View style={{ marginTop: verticalScale(16), gap: verticalScale(4) }}>
           <Text
-            style={{ fontSize: moderateScale(40) }}
+            style={{ fontSize: moderateScale(35) }}
             className="text-center font-extrabold uppercase text-white">
             Forecast conditions
           </Text>

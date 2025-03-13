@@ -9,6 +9,7 @@ import Screen from '~/components/Layout/Screen';
 import SliderInput from '~/components/SliderInput';
 import AlertIcon from '~/components/icons/Alert';
 import Chevron from '~/components/icons/Chevron';
+import Delete from '~/components/icons/Delete';
 import { Alert, alertStorage } from '~/services/alertStorage';
 
 export const getTide = (tide: number) => {
@@ -86,15 +87,28 @@ const Alerts = () => {
     setEditMode(!editMode);
   };
 
+  const handleDelete = async () => {
+    if (activeItem) {
+      await alertStorage.deleteAlert(activeItem.id);
+      await loadAlerts();
+    }
+  };
+
   const goToNext = () => {
     if (currentIndex < alerts.length - 1) {
       setCurrentIndex(currentIndex + 1);
+    } else if (alerts.length > 0) {
+      setCurrentIndex(0);
+    } else {
+      navigate('/alert-form');
     }
   };
 
   const goToPrevious = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+    } else if (alerts.length > 1) {
+      setCurrentIndex(alerts.length - 1);
     }
   };
 
@@ -115,18 +129,26 @@ const Alerts = () => {
       <View className="flex-1 border-y border-teal-300 bg-[#d1e8e2] px-4 py-2">
         <View>
           <Text className="text-center text-xl font-bold uppercase">Location</Text>
-          <Input
-            border
-            editable={editMode}
-            className="text-center text-3xl font-semibold"
-            placeholder="city, state"
-            value={activeItem?.location}
-            onChangeText={(text) => {
-              if (activeItem) {
-                setActiveItem({ ...activeItem, location: text });
-              }
-            }}
-          />
+          {editMode ? (
+            <Input
+              className="text-center text-3xl  font-bold"
+              placeholder="city, state"
+              autoFocus
+              size={30}
+              value={activeItem?.location}
+              onChangeText={(text) => {
+                if (activeItem) {
+                  setActiveItem({ ...activeItem, location: text });
+                }
+              }}
+            />
+          ) : (
+            <View className="h-[41px] items-center justify-center border-2  border-black bg-white">
+              <Text className="text-center text-3xl font-bold uppercase">
+                {activeItem?.location}
+              </Text>
+            </View>
+          )}
         </View>
 
         <View className="mt-3 flex-1 gap-4">
@@ -233,12 +255,8 @@ const Alerts = () => {
           <>
             {/* Indicators */}
             <View className="flex-row items-center justify-between gap-4 px-4 py-4">
-              <TouchableOpacity disabled={currentIndex === 0} onPress={goToPrevious}>
-                <Chevron
-                  size={moderateScale(30)}
-                  color={currentIndex === 0 ? 'grey' : 'black'}
-                  direction="left"
-                />
+              <TouchableOpacity onPress={goToPrevious}>
+                <Chevron size={moderateScale(30)} color="black" direction="left" />
               </TouchableOpacity>
               {[0, 1, 2, 3].map((index) => (
                 <TouchableOpacity
@@ -258,10 +276,7 @@ const Alerts = () => {
                   />
                 </TouchableOpacity>
               ))}
-              <TouchableOpacity
-                onPress={() =>
-                  alerts.length - 1 >= currentIndex ? goToNext() : navigate('/alert-form')
-                }>
+              <TouchableOpacity onPress={goToNext}>
                 <Chevron size={moderateScale(30)} direction="right" />
               </TouchableOpacity>
             </View>
@@ -273,6 +288,11 @@ const Alerts = () => {
                   {editMode ? 'CANCEL' : 'EDIT'}
                 </Text>
               </TouchableOpacity>
+              {activeItem && (
+                <TouchableOpacity onPress={handleDelete}>
+                  <Delete />
+                </TouchableOpacity>
+              )}
               <TouchableOpacity onPress={handleSave} disabled={!editMode || !hasChanges()}>
                 <Text
                   style={{ fontSize: moderateScale(26) }}

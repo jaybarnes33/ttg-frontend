@@ -15,14 +15,14 @@ const Home = () => {
   const actions = [
     {
       label: 'Add Alerts',
-      icon: <Globe size={67} color="#5000FF" />,
+      icon: <Globe size={85} color="#5000FF" />,
       onPress: () => {
         router.navigate('/alert-form');
       },
     },
     {
       label: 'View Alerts',
-      icon: <Alerts size={67} />,
+      icon: <Alerts size={80} />,
       onPress: () => {
         router.navigate('/alerts');
       },

@@ -68,93 +68,89 @@ const CreateAlert = () => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-          <View className="gap-y-5 px-4" style={{ paddingVertical: verticalScale(6) }}>
-            <Text
-              style={{ fontSize: moderateScale(41) }}
-              className="text-center font-extrabold uppercase text-white">
-              ADD NEW ALERT
-            </Text>
-            <View>
-              <Input
-                name="Location"
-                style={{ fontSize: moderateScale(20) }}
-                className="text-center font-semibold"
-                placeholder="city, state"
-                value={location}
-                onChangeText={setLocation}
-              />
-
-              <Input
-                name="Activity"
-                style={{ fontSize: moderateScale(20) }}
-                className="text-center font-semibold"
-                placeholder="activity"
-                value={activity}
-                onChangeText={setActivity}
-              />
-            </View>
-
-            <SliderInput
-              label="Wind"
-              value={maxWindSpeed}
-              onChange={setMaxWindSpeed}
-              description={
-                <Text
-                  style={{ fontSize: moderateScale(18) }}
-                  className="text-right font-semibold uppercase">
-                  Max Wind - {maxWindSpeed} MPH
-                </Text>
-              }
+        <View className="gap-y-5 px-4" style={{ paddingVertical: verticalScale(6) }}>
+          <Text
+            style={{ fontSize: moderateScale(41) }}
+            className="text-center font-extrabold uppercase text-white">
+            ADD NEW ALERT
+          </Text>
+          <View>
+            <Input
+              name="Location"
+              className="pt-1 text-center text-3xl font-semibold "
+              placeholder="city, state"
+              value={location}
+              onChangeText={setLocation}
             />
 
-            <SliderInput
-              label="Wave"
-              value={maxWaveHeight}
-              onChange={setMaxWaveHeight}
-              description={
-                <Text
-                  style={{ fontSize: moderateScale(18) }}
-                  className="text-right font-semibold uppercase">
-                  Swells - {maxWaveHeight} ft
-                </Text>
-              }
+            <Input
+              name="Activity"
+              className=" text-center text-3xl font-semibold"
+              placeholder="activity"
+              value={activity}
+              onChangeText={setActivity}
             />
-
-            <SliderInput
-              label="Tide"
-              value={tide}
-              onChange={setTide}
-              description={
-                <View className="flex-row justify-start">
-                  {['N/A', 'Low', 'MED', 'High'].map((text) => (
-                    <Text
-                      key={text}
-                      style={{ fontSize: moderateScale(18), width: moderateScale(25) }}
-                      className="ml-2 flex-1 text-right font-semibold uppercase">
-                      {text}
-                    </Text>
-                  ))}
-                </View>
-              }
-            />
-
-            <TouchableOpacity
-              style={{
-                paddingHorizontal: scale(8),
-                paddingVertical: verticalScale(4),
-              }}
-              className={`bg-button border-button mx-auto rounded-xl border-2 ${saving ? 'opacity-50' : ''}`}
-              onPress={handleCreate}
-              disabled={saving || !location.trim()}>
-              <Text
-                style={{ fontSize: moderateScale(24) }}
-                className="text-center font-semibold uppercase text-white">
-                {saving ? 'Creating...' : 'Save'}
-              </Text>
-            </TouchableOpacity>
           </View>
-        </ScrollView>
+
+          <SliderInput
+            label="Wind"
+            value={maxWindSpeed}
+            onChange={setMaxWindSpeed}
+            description={
+              <Text
+                style={{ fontSize: moderateScale(18) }}
+                className="text-right font-semibold uppercase">
+                Max Wind - {maxWindSpeed} MPH
+              </Text>
+            }
+          />
+
+          <SliderInput
+            label="Wave"
+            value={maxWaveHeight}
+            onChange={setMaxWaveHeight}
+            description={
+              <Text
+                style={{ fontSize: moderateScale(18) }}
+                className="text-right font-semibold uppercase">
+                Swells - {maxWaveHeight} ft
+              </Text>
+            }
+          />
+
+          <SliderInput
+            label="Tide"
+            value={tide}
+            onChange={setTide}
+            description={
+              <View className="flex-row justify-end">
+                {['N/A', 'Low', 'MED', 'High'].map((text) => (
+                  <Text
+                    key={text}
+                    style={{ fontSize: moderateScale(18) }}
+                    className="ml-2  text-right font-semibold uppercase">
+                    {text}
+                  </Text>
+                ))}
+              </View>
+            }
+          />
+
+          <TouchableOpacity
+            style={{
+              paddingHorizontal: scale(8),
+              paddingVertical: verticalScale(4),
+            }}
+            className={`mx-auto rounded-xl border-2 border-button bg-button ${saving ? 'opacity-50' : ''}`}
+            onPress={handleCreate}
+            disabled={saving || !location.trim()}>
+            <Text
+              style={{ fontSize: moderateScale(24) }}
+              className="text-center font-semibold uppercase text-white">
+              {saving ? 'Creating...' : 'Save'}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
     </Screen>
   );

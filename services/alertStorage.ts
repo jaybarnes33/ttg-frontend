@@ -19,7 +19,12 @@ export const alertStorage = {
   async getAlerts(): Promise<Alert[]> {
     try {
       const data = await AsyncStorage.getItem(ALERTS_STORAGE_KEY);
-      return data ? JSON.parse(data) : [];
+      return data
+        ? JSON.parse(data).sort(
+            (a: Alert, b: Alert) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+        : [];
     } catch (error) {
       console.error('Error loading alerts:', error);
       return [];

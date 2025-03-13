@@ -1,21 +1,22 @@
 import { Feather } from '@expo/vector-icons';
 import { clsx } from 'clsx';
 import React from 'react';
-import { View, Text, TextInput, TextInputProps, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TextInputProps, TouchableOpacity, Keyboard } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
-const Input = (props: TextInputProps & { name?: string; border?: boolean }) => {
+const Input = (props: TextInputProps & { name?: string; border?: boolean; size?: number }) => {
   const [focus, setFocus] = React.useState(false);
   const [secure, setSecure] = React.useState(props.secureTextEntry || false);
   const inputRef = React.useRef<TextInput>(null);
 
+  const handleBlur = () => {
+    setFocus(false);
+    Keyboard.dismiss();
+  };
+
   return (
     <View style={{ marginVertical: verticalScale(8), gap: verticalScale(4) }}>
       <View
-        style={{
-          height: props.multiline ? verticalScale(100) : verticalScale(45),
-          ...(props.multiline && { paddingVertical: verticalScale(8) }),
-        }}
         className={clsx([
           'font-main w-full justify-center bg-blue-100 font-semibold',
           focus && 'border-[3.1px] border-teal-500',
@@ -25,17 +26,16 @@ const Input = (props: TextInputProps & { name?: string; border?: boolean }) => {
           {...props}
           ref={inputRef}
           style={{
-            height: '100%',
-            paddingHorizontal: scale(12),
-            fontSize: moderateScale(16),
+            minHeight: verticalScale(48),
+            paddingVertical: verticalScale(8),
             ...(props.style as object),
           }}
-          className={clsx(['font-main absolute w-full flex-1 bg-white', props.className])}
+          className={clsx(['w-full bg-white', props.className])}
           placeholderTextColor="#bbb"
           secureTextEntry={secure}
           editable={props.editable}
           onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
+          onBlur={handleBlur}
         />
         {props.secureTextEntry && (
           <TouchableOpacity
