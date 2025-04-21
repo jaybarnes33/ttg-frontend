@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "668879853105",
+    "project_id": "ttg-60226",
+    "storage_bucket": "ttg-60226.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:668879853105:android:25d5c07d13e98d22912710",
+        "android_client_info": {
+          "package_name": "com.dishplug.ttg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsH1QOi12A1yUPxpAktUlidXIPLZ00QkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
