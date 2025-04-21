@@ -18,7 +18,7 @@ const Input = (props: TextInputProps & { name?: string; border?: boolean; size?:
     <View style={{ marginVertical: verticalScale(8), gap: verticalScale(4) }}>
       <View
         className={clsx([
-          'font-main w-full justify-center bg-blue-100 font-semibold',
+          'font-main w-full justify-center   font-semibold',
           focus && 'border-[3.1px] border-teal-500',
           props.border && 'border-2 border-black',
         ])}>
@@ -30,7 +30,7 @@ const Input = (props: TextInputProps & { name?: string; border?: boolean; size?:
             paddingVertical: verticalScale(8),
             ...(props.style as object),
           }}
-          className={clsx(['w-full bg-white', props.className])}
+          className={clsx(['w-full bg-white px-2', props.className])}
           placeholderTextColor="#bbb"
           secureTextEntry={secure}
           editable={props.editable}

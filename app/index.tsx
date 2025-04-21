@@ -1,75 +1,88 @@
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import Input from '~/components/Input';
-import Logo from '~/components/Logo';
+import Screen from '~/components/Layout/Screen';
+import { inAppPurchasesService } from '~/services/inAppPurchases';
 
-const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { navigate } = useRouter();
+const Index = () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [isPremium, setIsPremium] = useState(false);
 
-  const handleSignIn = () => {
-    console.log('Sign in');
-    navigate('/home');
+  useEffect(() => {
+    checkPremiumStatus();
+  }, []);
+
+  const checkPremiumStatus = async () => {
+    try {
+      await inAppPurchasesService.initialize();
+      const premiumStatus = await inAppPurchasesService.isPremium();
+      setIsPremium(premiumStatus);
+    } catch (error) {
+      console.error('Error checking premium status:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePurchase = async () => {
+    try {
+      setLoading(true);
+      const success = await inAppPurchasesService.purchasePremium();
+      if (success) {
+        Alert.alert('Success', 'Thank you for purchasing premium!');
+        setIsPremium(true);
+        router.push('/home');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to complete purchase. Please try again.');
+      console.error('Error purchasing:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-amber-200">
-      <View className="flex-1 px-6  py-20">
-        <View className="mb-8 items-center">
-          <Text className="mb-2 text-center text-3xl font-semibold text-gray-700 ">Sign In</Text>
-          <Logo />
-        </View>
-
-        <View className="gap-y-4">
-          <View>
-            <Text className="font-semibold text-gray-800">Username or Email</Text>
-            <Input
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              className="rounded border border-neutral-300"
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
+    <Screen hideArrows>
+      <SafeAreaView className="flex-1 px-4">
+        {loading ? (
+          <View className="flex-1 items-center justify-center">
+            <ActivityIndicator size="large" color="#0000ff" />
           </View>
-
-          <View>
-            <Text className="font-semibold text-gray-800">Password</Text>
-            <Input
-              placeholder="Password"
-              value={password}
-              className="rounded border border-neutral-300"
-              onChangeText={setPassword}
-              secureTextEntry
-            />
+        ) : isPremium ? (
+          <View className="flex-1 items-center justify-center">
+            <Text className="text-center text-2xl font-bold">You already have premium!</Text>
+            <TouchableOpacity
+              className="mt-4 rounded-lg bg-gray-200 p-4"
+              onPress={() => router.push('/home')}>
+              <Text className="text-center text-lg">Continue to App</Text>
+            </TouchableOpacity>
           </View>
+        ) : (
+          <>
+            <View className="mb-8">
+              <Text className="text-center text-3xl font-bold">Welcome to TTG</Text>
+              <Text className="mt-4 text-center text-lg">
+                Never miss a good day to be outside again.
+              </Text>
+            </View>
 
-          <TouchableOpacity className="rounded bg-indigo-600 p-4" onPress={handleSignIn}>
-            <Text className="text-center font-semibold text-white">Sign In</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity className=" mx-auto w-48">
-            <Text className="pt-1  text-center text-base font-semibold text-indigo-600 underline ">
-              Forgot your Password?
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View className="mt-auto gap-y-3">
-          <Text className="text-center text-base font-medium text-neutral-500">
-            Don't have an account?
-          </Text>
-          <TouchableOpacity
-            onPress={() => navigate('/signup')}
-            className="mx-auto w-20  border-neutral-400">
-            <Text className="text-center font-semibold text-indigo-600 underline">Sign Up</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
+            <View className="flex-1 gap-y-4">
+              <TouchableOpacity
+                className="rounded-lg border border-gray-300 bg-white p-4"
+                onPress={handlePurchase}>
+                <Text className="text-xl font-semibold">Premium Access</Text>
+                <Text className="text-lg">One-time purchase</Text>
+                <Text className="mt-2 text-lg font-bold">$7.99</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
+      </SafeAreaView>
+    </Screen>
   );
 };
 
-export default SignIn;
+export default Index;

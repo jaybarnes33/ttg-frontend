@@ -79,16 +79,16 @@ const AlertScreen = () => {
           marginVertical: verticalScale(8),
           paddingVertical: scale(8),
           paddingHorizontal: scale(16),
-          gap: verticalScale(10),
+          gap: verticalScale(5),
         }}
         className="flex-1 border bg-[#E6A91A]">
         <View>
           <Text
-            style={{ fontSize: moderateScale(30) }}
+            style={{ fontSize: moderateScale(25) }}
             className="text-center font-extrabold uppercase text-white">
             Location
           </Text>
-          <Text style={{ fontSize: moderateScale(48) }} className="text-center font-bold uppercase">
+          <Text style={{ fontSize: moderateScale(44) }} className="text-center font-bold uppercase">
             {parsed.location}
           </Text>
         </View>
@@ -111,26 +111,19 @@ const AlertScreen = () => {
           <Text
             style={{ fontSize: moderateScale(35) }}
             className="text-center font-extrabold uppercase text-white">
-            Forecast conditions
+            conditions
           </Text>
 
           <View className="flex-row items-center justify-between">
             <Text style={{ fontSize: moderateScale(20) }} className="font-bold uppercase">
-              Clear
+              MAX WIND - {parsed.threshold.maxWindSpeed}MPH
             </Text>
-            <Sun />
+            <Wind wind={parsed.threshold.maxWindSpeed} />
           </View>
 
           <View className="flex-row items-center justify-between">
             <Text style={{ fontSize: moderateScale(20) }} className="font-bold uppercase">
-              MAX WIND - {parsed.threshold.maxWindSpeed}
-            </Text>
-            <Wind />
-          </View>
-
-          <View className="flex-row items-center justify-between">
-            <Text style={{ fontSize: moderateScale(20) }} className="font-bold uppercase">
-              Swells - {parsed.threshold.maxWaveHeight}
+              Swells - {parsed.threshold.maxWaveHeight} FEET
             </Text>
             <Swells />
           </View>
@@ -139,7 +132,20 @@ const AlertScreen = () => {
             <Text style={{ fontSize: moderateScale(20) }} className="font-bold uppercase">
               Tide - {getTide(parsed.threshold.tide ?? 0)} - 1PM
             </Text>
-            <Tide />
+            <Tide tide={parsed.threshold.tide ?? 0} />
+          </View>
+        </View>
+        <View>
+          <Text
+            style={{ fontSize: moderateScale(35) }}
+            className="text-center font-extrabold uppercase text-white">
+            Forecast
+          </Text>
+          <View className="flex-row items-center justify-between">
+            <Text style={{ fontSize: moderateScale(20) }} className="font-bold uppercase">
+              Clear
+            </Text>
+            <Sun />
           </View>
         </View>
       </View>

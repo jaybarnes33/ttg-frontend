@@ -1,34 +1,93 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { usePathname, useRouter } from 'expo-router';
-import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { TouchableOpacity, View, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { scale } from 'react-native-size-matters';
 
 import Logo from '../Logo';
 import Chevron from '../icons/Chevron';
-const Screen = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
+import AnimatedCircles from '../AnimatedCircles';
 
+const Screen = ({
+  children,
+  hideArrows = false,
+}: {
+  children: React.ReactNode;
+  hideArrows?: boolean;
+}) => {
+  const router = useRouter();
   const pathname = usePathname();
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    if (pathname === '/alert') {
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.2,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1.2,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1.2,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    } else {
+      pulseAnim.setValue(1);
+    }
+  }, [pathname]);
 
   const handleNext = () => {
     const next =
       pathname === '/home' ? '/alerts' : pathname === '/alerts' ? '/alert-form' : '/home';
     router.push(next);
   };
+
   return (
     <LinearGradient colors={['#22B3AB', '#D9FBFC']} style={{ flex: 1 }}>
       <SafeAreaView className="pb-4" style={{ flex: 1 }}>
         <View className="flex-row items-center justify-between px-3">
-          <TouchableOpacity onPress={() => router.back()}>
-            <Chevron direction="left" size={scale(30)} color="white" />
-          </TouchableOpacity>
+          {!hideArrows && (
+            <>
+              <TouchableOpacity onPress={() => router.back()}>
+                <Chevron direction="left" size={scale(30)} color="white" />
+              </TouchableOpacity>
+            </>
+          )}
+          <View className="relative mx-auto items-center justify-center">
+            {pathname === '/alert' && <AnimatedCircles isActive={pathname === '/alert'} />}
+            <Animated.View style={{ transform: [{ scale: pulseAnim }] }}>
+              <Logo width={scale(100)} height={scale(100.3)} />
+            </Animated.View>
+          </View>
 
-          <Logo width={scale(100)} height={scale(100.3)} />
-          <TouchableOpacity onPress={handleNext}>
-            <Chevron direction="right" size={scale(30)} color="white" />
-          </TouchableOpacity>
+          {!hideArrows && (
+            <TouchableOpacity onPress={handleNext}>
+              <Chevron direction="right" size={scale(30)} color="white" />
+            </TouchableOpacity>
+          )}
         </View>
 
         {children}

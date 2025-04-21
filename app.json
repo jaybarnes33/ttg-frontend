@@ -11,7 +11,20 @@
     },
     "plugins": [
       "expo-router",
-      "expo-build-properties"
+      "expo-build-properties",
+      [
+        "expo-notifications",
+        {
+          "enableBackgroundRemoteNotifications": true,
+          "sounds": ["./assets/sounds/ring.mp3"]
+        }
+      ],
+      [
+        "react-native-iap",
+        {
+          "paymentProvider": "both"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
@@ -25,19 +38,28 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.dishplug.ttg"
+      "bundleIdentifier": "com.dishplug.ttg",
+      "infoPlist": {
+        "UIBackgroundModes": ["remote-notification"],
+        "NSUserActivityTypes": ["INStartCallIntent", "INStartVideoCallIntent"],
+        "SKAdNetworkItems": [
+          {
+            "SKAdNetworkIdentifier": "cstr6suwn9.skadnetwork"
+          }
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dishplug.ttg"
+      "package": "com.dishplug.ttg",
+      "googleServicesFile": "./google-services.json",
+      "permissions": ["NOTIFICATIONS", "BILLING"]
     },
     "extra": {
       "router": {

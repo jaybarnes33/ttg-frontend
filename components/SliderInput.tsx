@@ -9,12 +9,14 @@ const SliderInput = ({
   onChange,
   disabled,
   description,
+  max,
 }: {
   label: string;
   value: number;
   onChange: (value: number) => void;
   description: ReactNode;
   disabled?: boolean;
+  max: number;
 }) => {
   return (
     <View style={{ gap: verticalScale(8) }}>
@@ -29,7 +31,7 @@ const SliderInput = ({
         <Slider
           style={{ flex: 1 }}
           minimumValue={0}
-          maximumValue={50}
+          maximumValue={max}
           value={value}
           thumbImage={require('~/assets/knob.png')}
           // thumbImage={require('~/assets/thumb.png')}

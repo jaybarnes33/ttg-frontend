@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { notificationsService } from './notifications';
+import { SchedulableTriggerInputTypes } from 'expo-notifications';
+
 export type Alert = {
   id: string;
   location: string;
@@ -11,6 +14,7 @@ export type Alert = {
   };
   active: boolean;
   createdAt: string;
+  notificationId?: string;
 };
 
 const ALERTS_STORAGE_KEY = '@sailor_alerts';
@@ -31,7 +35,7 @@ export const alertStorage = {
     }
   },
 
-  async saveAlert(alert: Omit<Alert, 'id' | 'createdAt'>): Promise<Alert> {
+  async saveAlert(alert: Omit<Alert, 'id' | 'createdAt' | 'notificationId'>): Promise<Alert> {
     try {
       const alerts = await this.getAlerts();
       const newAlert: Alert = {
@@ -41,6 +45,16 @@ export const alertStorage = {
       };
 
       await AsyncStorage.setItem(ALERTS_STORAGE_KEY, JSON.stringify([...alerts, newAlert]));
+
+      if (alert.active) {
+        const notificationId = await notificationsService.scheduleLocalNotification(
+          `New Alert: ${alert.location}`,
+          `Activity: ${alert.activity}\nMax Wind Speed: ${alert.threshold.maxWindSpeed}\nMax Wave Height: ${alert.threshold.maxWaveHeight}\nTide: ${alert.threshold.tide}`,
+          newAlert
+        );
+        newAlert.notificationId = notificationId;
+        await AsyncStorage.setItem(ALERTS_STORAGE_KEY, JSON.stringify([...alerts, newAlert]));
+      }
 
       return newAlert;
     } catch (error) {
@@ -52,9 +66,25 @@ export const alertStorage = {
   async updateAlert(alert: Alert): Promise<void> {
     try {
       const alerts = await this.getAlerts();
-      const updatedAlerts = alerts.map((a) => (a.id === alert.id ? alert : a));
+      const existingAlert = alerts.find((a) => a.id === alert.id);
 
+      // Cancel existing notification if it exists
+      if (existingAlert?.notificationId) {
+        await notificationsService.cancelNotification(existingAlert.notificationId);
+      }
+
+      const updatedAlerts = alerts.map((a) => (a.id === alert.id ? alert : a));
       await AsyncStorage.setItem(ALERTS_STORAGE_KEY, JSON.stringify(updatedAlerts));
+
+      if (alert.active) {
+        const notificationId = await notificationsService.scheduleLocalNotification(
+          `Updated Alert: ${alert.location}`,
+          `Activity: ${alert.activity}\nMax Wind Speed: ${alert.threshold.maxWindSpeed}\nMax Wave Height: ${alert.threshold.maxWaveHeight}\nTide: ${alert.threshold.tide}`,
+          alert
+        );
+        alert.notificationId = notificationId;
+        await AsyncStorage.setItem(ALERTS_STORAGE_KEY, JSON.stringify(updatedAlerts));
+      }
     } catch (error) {
       console.error('Error updating alert:', error);
       throw error;
@@ -64,6 +94,13 @@ export const alertStorage = {
   async deleteAlert(id: string): Promise<void> {
     try {
       const alerts = await this.getAlerts();
+      const alertToDelete = alerts.find((a) => a.id === id);
+
+      // Cancel notification if it exists
+      if (alertToDelete?.notificationId) {
+        await notificationsService.cancelNotification(alertToDelete.notificationId);
+      }
+
       const filteredAlerts = alerts.filter((alert) => alert.id !== id);
 
       await AsyncStorage.setItem(ALERTS_STORAGE_KEY, JSON.stringify(filteredAlerts));

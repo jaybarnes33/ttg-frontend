@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, TouchableOpacity, BackHandler, Platform } from 'react-native';
+import { moderateScale } from 'react-native-size-matters';
 // import RNExitApp from 'react-native-exit-app';
 
 import Screen from '~/components/Layout/Screen';
@@ -15,14 +16,14 @@ const Home = () => {
   const actions = [
     {
       label: 'Add Alerts',
-      icon: <Globe size={85} color="#5000FF" />,
+      icon: <Globe size={100} color="#5000FF" />,
       onPress: () => {
         router.navigate('/alert-form');
       },
     },
     {
       label: 'View Alerts',
-      icon: <Alerts size={80} />,
+      icon: <Alerts size={moderateScale(80)} />,
       onPress: () => {
         router.navigate('/alerts');
       },
@@ -56,7 +57,7 @@ const Home = () => {
           <Settings size={48} />
         </TouchableOpacity>
         <TouchableOpacity
-          className="h-12 w-12 items-center justify-center rounded-full border-[0.2px] border-black bg-teal-500"
+          className="h-14 w-14 items-center justify-center rounded-full border-[0.2px] border-black bg-teal-500"
           onPress={() => router.navigate('/help')}>
           <Text className="text-base font-bold uppercase text-white">Help</Text>
         </TouchableOpacity>
