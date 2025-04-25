@@ -12,7 +12,7 @@ const SignIn = () => {
 
   const handleSignIn = () => {
     console.log('Sign in');
-    navigate('/home');
+    navigate('/');
   };
 
   return (

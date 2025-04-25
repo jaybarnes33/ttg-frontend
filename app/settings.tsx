@@ -14,33 +14,21 @@ const Settings = () => {
 
   const settingsSections = [
     {
-      title: 'Premium Signup',
-      action: () => router.push('/premium-signup'),
-    },
-    {
-      title: 'Alert Sound',
-      action: () => {}, // Add alert sound settings
-    },
-    {
-      title: 'Alert Duration',
-      action: () => {}, // Add alert duration settings
-    },
-    {
-      title: 'Alert Frequency',
-      action: () => {}, // Add alert frequency settings
+      title: 'Get Premium',
+      action: () => router.push('/premium'),
     },
   ];
 
   return (
     <Screen>
-      <View className="my-8 gap-y-4">
+      <View className="my-8 gap-y-4 px-4">
+        {/* <Text className="text-center  text-xl font-bold uppercase">Settings</Text> */}
         {settingsSections.map((section, index) => (
           <TouchableOpacity
             key={section.title}
             onPress={section.action}
-            className="flex-row items-center justify-between rounded-lg border border-gray-300 p-4">
-            <Text className="text-[20px] font-medium uppercase">{section.title}</Text>
-            <MaterialIcons name="chevron-right" size={24} color="black" />
+            className="flex-row items-center justify-center rounded-lg  p-4">
+            <Text className="text-2xl font-bold uppercase">{section.title}</Text>
           </TouchableOpacity>
         ))}
       </View>

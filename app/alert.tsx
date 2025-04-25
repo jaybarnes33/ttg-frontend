@@ -41,12 +41,6 @@ const AlertScreen = () => {
       { cancelable: true }
     );
   };
-  const handleEdit = () => {
-    router.push({
-      pathname: '/alerts',
-      params: { id: parsed.id },
-    });
-  };
 
   const bottom = [
     {
@@ -54,11 +48,7 @@ const AlertScreen = () => {
       text: 'Silent Alert',
       onPress: () => setIsSilent(!isSilent),
     },
-    {
-      icon: <EditAlert />,
-      text: 'Edit Alert',
-      onPress: handleEdit,
-    },
+
     {
       icon: <Delete />,
       text: 'Delete Alert',
@@ -72,7 +62,7 @@ const AlertScreen = () => {
   };
 
   return (
-    <Screen>
+    <Screen hideArrows>
       <View
         style={{
           marginHorizontal: scale(16),

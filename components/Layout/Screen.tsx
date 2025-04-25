@@ -5,9 +5,9 @@ import { TouchableOpacity, View, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { scale } from 'react-native-size-matters';
 
+import AnimatedCircles from '../AnimatedCircles';
 import Logo from '../Logo';
 import Chevron from '../icons/Chevron';
-import AnimatedCircles from '../AnimatedCircles';
 
 const Screen = ({
   children,
@@ -60,9 +60,8 @@ const Screen = ({
   }, [pathname]);
 
   const handleNext = () => {
-    const next =
-      pathname === '/home' ? '/alerts' : pathname === '/alerts' ? '/alert-form' : '/home';
-    router.push(next);
+    const next = pathname === '/' ? '/alerts' : pathname === '/alerts' ? '/alert-form' : '/';
+    router.push(next as any);
   };
 
   return (
@@ -71,7 +70,7 @@ const Screen = ({
         <View className="flex-row items-center justify-between px-3">
           {!hideArrows && (
             <>
-              <TouchableOpacity onPress={() => router.back()}>
+              <TouchableOpacity disabled={pathname === '/'} onPress={() => router.back()}>
                 <Chevron direction="left" size={scale(30)} color="white" />
               </TouchableOpacity>
             </>

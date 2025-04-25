@@ -1,88 +1,73 @@
+import clsx from 'clsx';
 import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react';
+import { View, Text, TouchableOpacity, BackHandler, Platform } from 'react-native';
+import { moderateScale } from 'react-native-size-matters';
+// import RNExitApp from 'react-native-exit-app';
 
 import Screen from '~/components/Layout/Screen';
-import { inAppPurchasesService } from '~/services/inAppPurchases';
+import { Alerts } from '~/components/icons/Alerts';
+import Boating from '~/components/icons/Boating';
+import Globe from '~/components/icons/Globe';
+import Settings from '~/components/icons/Settings';
 
-const Index = () => {
+const Home = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [isPremium, setIsPremium] = useState(false);
+  const actions = [
+    {
+      label: 'Add Alerts',
+      icon: <Globe size={100} color="#5000FF" />,
+      onPress: () => {
+        router.navigate('/alert-form');
+      },
+    },
+    {
+      label: 'View Alerts',
+      icon: <Alerts size={moderateScale(80)} />,
+      onPress: () => {
+        router.navigate('/alerts');
+      },
+    },
+  ];
 
-  useEffect(() => {
-    checkPremiumStatus();
-  }, []);
-
-  const checkPremiumStatus = async () => {
-    try {
-      await inAppPurchasesService.initialize();
-      const premiumStatus = await inAppPurchasesService.isPremium();
-      setIsPremium(premiumStatus);
-    } catch (error) {
-      console.error('Error checking premium status:', error);
-    } finally {
-      setLoading(false);
+  const handleExitApp = () => {
+    if (Platform.OS === 'ios') {
+      // RNExitApp.exitApp();
+    } else {
+      BackHandler.exitApp();
     }
   };
-
-  const handlePurchase = async () => {
-    try {
-      setLoading(true);
-      const success = await inAppPurchasesService.purchasePremium();
-      if (success) {
-        Alert.alert('Success', 'Thank you for purchasing premium!');
-        setIsPremium(true);
-        router.push('/home');
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to complete purchase. Please try again.');
-      console.error('Error purchasing:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <Screen hideArrows>
-      <SafeAreaView className="flex-1 px-4">
-        {loading ? (
-          <View className="flex-1 items-center justify-center">
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
-        ) : isPremium ? (
-          <View className="flex-1 items-center justify-center">
-            <Text className="text-center text-2xl font-bold">You already have premium!</Text>
-            <TouchableOpacity
-              className="mt-4 rounded-lg bg-gray-200 p-4"
-              onPress={() => router.push('/home')}>
-              <Text className="text-center text-lg">Continue to App</Text>
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <>
-            <View className="mb-8">
-              <Text className="text-center text-3xl font-bold">Welcome to TTG</Text>
-              <Text className="mt-4 text-center text-lg">
-                Never miss a good day to be outside again.
-              </Text>
+    <Screen>
+      <View className="flex-1 ">
+        {actions.map((action, index) => (
+          <View key={index} className={clsx(['mb-4  rounded-xl p-4 '])}>
+            <View className=" items-center">
+              <Text className="text-[36px] font-bold uppercase">{action.label}</Text>
+              <TouchableOpacity onPress={action.onPress}>{action.icon}</TouchableOpacity>
             </View>
+          </View>
+        ))}
+      </View>
+      <View className="flex-1 items-center">
+        <Boating />
+      </View>
+      <View className="flex-row items-center justify-between px-6">
+        <TouchableOpacity onPress={() => router.navigate('/settings')}>
+          <Settings size={48} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          className="h-14 w-14 items-center justify-center rounded-full border-[0.2px] border-black bg-teal-500"
+          onPress={() => router.navigate('/help')}>
+          <Text className="text-base font-bold uppercase text-white">Help</Text>
+        </TouchableOpacity>
 
-            <View className="flex-1 gap-y-4">
-              <TouchableOpacity
-                className="rounded-lg border border-gray-300 bg-white p-4"
-                onPress={handlePurchase}>
-                <Text className="text-xl font-semibold">Premium Access</Text>
-                <Text className="text-lg">One-time purchase</Text>
-                <Text className="mt-2 text-lg font-bold">$7.99</Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        )}
-      </SafeAreaView>
+        <TouchableOpacity onPress={handleExitApp}>
+          <Text className="text-2xl font-bold uppercase ">Quit</Text>
+        </TouchableOpacity>
+      </View>
     </Screen>
   );
 };
 
-export default Index;
+export default Home;

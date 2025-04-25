@@ -285,6 +285,7 @@ const Alerts = () => {
                     disabled={alerts.length - 1 < index}
                     onPress={() => alerts.length - 1 >= index && setCurrentIndex(index)}>
                     <AlertIcon
+                      key={`alert-${index}`}
                       size={moderateScale(40)}
                       state={
                         index < alerts.length
