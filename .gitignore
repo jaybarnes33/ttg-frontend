@@ -13,7 +13,7 @@ web-build/
 expo-env.d.ts
 lambda
 
-
+.env.local
 
 # macOS
 .DS_Store
