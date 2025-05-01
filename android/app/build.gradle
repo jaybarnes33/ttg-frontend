@@ -86,6 +86,19 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
+flavorDimensions "appstore"
+
+productFlavors {
+  googlePlay {
+    dimension "appstore"
+    missingDimensionStrategy "store", "play"
+  }
+
+  amazon {
+    dimension "appstore"
+    missingDimensionStrategy "store", "amazon"
+  }
+}
     namespace 'com.dishplug.ttg'
     defaultConfig {
         applicationId 'com.dishplug.ttg'

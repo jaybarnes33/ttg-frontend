@@ -6,7 +6,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 const Logo = (props: { width?: number; height?: number }) => {
   const router = useRouter();
   return (
-    <TouchableOpacity onPress={() => router.navigate('/home')}>
+    <TouchableOpacity onPress={() => router.navigate('/')}>
       <Image
         className={clsx(Platform.OS === 'ios' && 'h-40  w-32')}
         resizeMode="contain"
