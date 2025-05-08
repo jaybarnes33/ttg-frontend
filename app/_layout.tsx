@@ -14,6 +14,7 @@ import { useColorScheme, useInitialAndroidBarSync } from '~/lib/useColorScheme';
 import { notificationsService } from '~/services/notifications';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { withIAPContext } from 'react-native-iap';
+import { Provider } from 'react-native-paper';
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -49,14 +50,16 @@ export default withIAPContext(function RootLayout() {
 
   return (
     <GestureHandlerRootView>
-      <View className="z-999 flex-1">
-        <StatusBar translucent />
+      <Provider>
+        <View className="z-999 flex-1">
+          <StatusBar translucent />
 
-        <Stack screenOptions={{ ...SCREEN_OPTIONS, navigationBarHidden: true }}>
-          <Stack.Screen name="index" options={INDEX_OPTIONS} />
-          <Stack.Screen name="modal" options={MODAL_OPTIONS} />
-        </Stack>
-      </View>
+          <Stack screenOptions={{ ...SCREEN_OPTIONS, navigationBarHidden: true }}>
+            <Stack.Screen name="index" options={INDEX_OPTIONS} />
+            <Stack.Screen name="modal" options={MODAL_OPTIONS} />
+          </Stack>
+        </View>
+      </Provider>
     </GestureHandlerRootView>
   );
 });

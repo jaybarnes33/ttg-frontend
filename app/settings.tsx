@@ -1,26 +1,37 @@
-import { MaterialIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import { useColorScheme } from 'nativewind';
-import React, { useState } from 'react';
-import { View, Text, Switch, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { useNavigation } from 'expo-router';
+import React from 'react';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 
-import { BackButton } from '~/components/BackButton';
-import Surfer from '~/components/icons/Surfer';
 import Screen from '~/components/Layout/Screen';
+import Surfer from '~/components/icons/Surfer';
 
 const Settings = () => {
-  const router = useRouter();
-  const [isPremium, setIsPremium] = useState(false);
-
+  const navigation = useNavigation();
   const settingsSections = [
     {
-      title: 'Get Premium',
-      action: () => router.push('/premium'),
+      title: 'Premium Signup',
+      action: () => Alert.alert('Get Premium', 'Coming Soon'),
     },
+    {
+      title: 'Alert Duration',
+      action: () => Alert.alert('Alert Duration', 'Coming Soon'),
+    },
+    {
+      title: 'Alert Frequency',
+      action: () => Alert.alert('Alert Frequency', 'Coming Soon'),
+    },
+    {
+      title: 'Recent / Past Alerts',
+      action: () => Alert.alert('Recent Alerts', 'Coming Soon'),
+    },
+    // {
+    //   title: 'Go Back',
+    //   action: () => navigation.goBack(),
+    // },
   ];
 
   return (
-    <Screen>
+    <Screen hideArrows>
       <View className="my-8 gap-y-4 px-4">
         {/* <Text className="text-center  text-xl font-bold uppercase">Settings</Text> */}
         {settingsSections.map((section, index) => (

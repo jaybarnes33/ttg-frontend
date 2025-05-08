@@ -132,7 +132,8 @@ const AlertScreen = () => {
 
           <View className="flex-row items-center justify-between">
             <Text style={{ fontSize: moderateScale(18) }} className="font-bold uppercase">
-              Tide - {getTide(parsed.threshold.tide ?? 0)} - 1PM
+              Tide - {getTide(parsed.threshold.tide ?? 0)}
+              {parsed.threshold.tideTime ? ` at ${parsed.threshold.tideTime}` : ''}
             </Text>
             <Tide tide={parsed.threshold.tide ?? 0} />
           </View>

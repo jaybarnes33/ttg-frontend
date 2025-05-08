@@ -11,6 +11,7 @@ export type Alert = {
     maxWindSpeed: number;
     maxWaveHeight: number;
     tide: number;
+    tideTime: string;
   };
   active: boolean;
   createdAt: string;
@@ -49,7 +50,7 @@ export const alertStorage = {
       if (alert.active) {
         const notificationId = await notificationsService.scheduleLocalNotification(
           `New Alert: ${alert.location}`,
-          `Activity: ${alert.activity}\nMax Wind Speed: ${alert.threshold.maxWindSpeed}\nMax Wave Height: ${alert.threshold.maxWaveHeight}\nTide: ${alert.threshold.tide}`,
+          `Activity: ${alert.activity}\nMax Wind Speed: ${alert.threshold.maxWindSpeed}\nMax Wave Height: ${alert.threshold.maxWaveHeight}\nTide: ${alert.threshold.tide}${alert.threshold.tideTime ? ` - ${alert.threshold.tideTime}` : ''}`,
           newAlert
         );
         newAlert.notificationId = notificationId;

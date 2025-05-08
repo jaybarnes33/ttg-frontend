@@ -12,6 +12,7 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 import { scale as scaleFunc, verticalScale, moderateScale } from 'react-native-size-matters';
+import { Menu, Button } from 'react-native-paper';
 
 import { getTide } from './alerts';
 import { alertStorage } from '../services/alertStorage';
@@ -20,12 +21,24 @@ import Input from '~/components/Input';
 import Screen from '~/components/Layout/Screen';
 import SliderInput from '~/components/SliderInput';
 
+const TIDE_TIMES = [
+  { label: 'Select Time', value: '' },
+  { label: '6:00 AM', value: '6:00' },
+  { label: '9:00 AM', value: '9:00' },
+  { label: '12:00 PM', value: '12:00' },
+  { label: '3:00 PM', value: '15:00' },
+  { label: '6:00 PM', value: '18:00' },
+  { label: '9:00 PM', value: '21:00' },
+];
+
 const CreateAlert = () => {
   const [location, setLocation] = useState('');
   const [activity, setActivity] = useState('');
   const [maxWindSpeed, setMaxWindSpeed] = useState(0);
   const [maxWaveHeight, setMaxWaveHeight] = useState(0);
   const [tide, setTide] = useState(0);
+  const [tideTime, setTideTime] = useState('');
+  const [menuVisible, setMenuVisible] = useState(false);
   const [saving, setSaving] = useState(false);
   const [totalAlerts, setTotalAlerts] = useState(0);
 
@@ -104,6 +117,7 @@ const CreateAlert = () => {
           maxWindSpeed,
           maxWaveHeight,
           tide,
+          tideTime,
         },
         active: true,
         activity,
@@ -117,6 +131,7 @@ const CreateAlert = () => {
       setMaxWindSpeed(0);
       setMaxWaveHeight(0);
       setTide(0);
+      setTideTime('');
       router.navigate('/alerts');
     } catch (error) {
       console.error('Error creating alert:', error);
@@ -203,11 +218,38 @@ const CreateAlert = () => {
             max={3}
             onChange={setTide}
             description={
-              <Text
-                style={{ fontSize: moderateScale(18) }}
-                className="text-right font-semibold uppercase">
-                {getTide(tide)}
-              </Text>
+              <View className="gap-y-2">
+                <View className="flex-row items-center justify-between">
+                  <Text style={{ fontSize: moderateScale(18) }} className="font-semibold uppercase">
+                    {getTide(tide)}
+                  </Text>
+                  <Menu
+                    visible={menuVisible}
+                    onDismiss={() => setMenuVisible(false)}
+                    anchor={
+                      <Button
+                        mode="outlined"
+                        onPress={() => setMenuVisible(true)}
+                        style={{ borderColor: '#000', borderWidth: 1 }}
+                        labelStyle={{ color: '#000', fontSize: moderateScale(14) }}>
+                        {tideTime
+                          ? TIDE_TIMES.find((t) => t.value === tideTime)?.label
+                          : 'Select Time'}
+                      </Button>
+                    }>
+                    {TIDE_TIMES.map((time) => (
+                      <Menu.Item
+                        key={time.value}
+                        onPress={() => {
+                          setTideTime(time.value);
+                          setMenuVisible(false);
+                        }}
+                        title={time.label}
+                      />
+                    ))}
+                  </Menu>
+                </View>
+              </View>
             }
           />
 

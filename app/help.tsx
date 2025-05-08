@@ -1,44 +1,131 @@
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Logo from '~/components/Logo';
 import Settings from '~/components/icons/Settings';
 
+interface AccordionSectionProps {
+  title: string;
+  content: React.ReactNode;
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+const AccordionSection: React.FC<AccordionSectionProps> = ({
+  title,
+  content,
+  isOpen,
+  onToggle,
+}) => (
+  <View className="mb-4 overflow-hidden rounded-lg border border-gray-200">
+    <TouchableOpacity
+      onPress={onToggle}
+      className="flex-row items-center justify-between bg-gray-50 p-4">
+      <Text className="text-lg font-semibold">{title}</Text>
+      <Text className="text-xl">{isOpen ? '−' : '+'}</Text>
+    </TouchableOpacity>
+    {isOpen && <View className="p-4">{content}</View>}
+  </View>
+);
+
 const Help = () => {
   const router = useRouter();
+  const [openSections, setOpenSections] = useState<Record<number, boolean>>({});
+
+  const toggleSection = (section: number) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
+  const sections = [
+    {
+      title: '🧪 DEMO MODE (Free Version)',
+      content: (
+        <View>
+          <Text className="mb-3 text-base leading-relaxed">
+            When you first install Time To Go, the app launches in Demo Mode so you can try it out
+            risk-free.{'\n'}- Add an alert location just like the real version{'\n'}- A sample alert
+            will appear ~5 minutes later{'\n'}- This alert shows fake (demo) conditions, not
+            real-time weather{'\n'}- You'll see the full pop-up alert screen, sound (PING), and
+            forecast layout{'\n'}- This is to demonstrate how alerts function—not actual conditions
+            {'\n\n'}
+            App Store Reviewers Note: This is a fully functional demo of the alert system. No real
+            weather data is shown until the user upgrades.
+          </Text>
+          <Text className="text-base leading-relaxed">
+            To activate live alerts based on real wind, wave, and tide forecasts, upgrade to the
+            full version for $7.99/year.
+          </Text>
+        </View>
+      ),
+    },
+    {
+      title: '🔍 What Does TTG Do?',
+      content: (
+        <Text className="text-base leading-relaxed">
+          Time To Go (TTG) is a mobile alert app for outdoor lovers. It monitors wind, wave, and
+          tide forecasts. When your saved conditions match at one of your saved locations, TTG sends
+          a popup alert screen with a sonar-style PING sound. No checking. No stress. Just go.
+        </Text>
+      ),
+    },
+    {
+      title: '📍 How to Set an Alert',
+      content: (
+        <Text className="text-base leading-relaxed">
+          Go to the "Add New Alert" screen. Enter a city, state, or GPS coordinates. Use the sliders
+          to set wind, wave, and tide limits. Any slider left unmoved is treated as N/A. Tap Save to
+          activate your alert.
+        </Text>
+      ),
+    },
+    {
+      title: '🧭 Navigating Alerts',
+      content: (
+        <Text className="text-base leading-relaxed">
+          Use arrow buttons at the top to navigate screens. Tap the logo to return to Home. In
+          View/Edit Alerts, you can adjust wind, wave, and tide conditions, but not location.
+        </Text>
+      ),
+    },
+    {
+      title: '🔔 Alert Pop-Up',
+      content: (
+        <Text className="text-base leading-relaxed">
+          When conditions match, the TTG alert pop-up appears with your location, condition summary,
+          and forecast. Tap the forecast icon for more detail. Use CLOSE ALERT to stop the sound and
+          exit the screen.
+        </Text>
+      ),
+    },
+  ];
+
   return (
-    <SafeAreaView className="relative flex-1 items-center  bg-white px-6">
-      <View className="flex-row items-center justify-between">
+    <SafeAreaView className="relative flex-1 bg-white">
+      <View className="flex-row items-center justify-between px-6 py-4">
         <Text className="w-1/3 text-3xl font-bold uppercase">How to use</Text>
         <Logo />
         <Text className="w-1/3 text-3xl font-bold uppercase">Time to go</Text>
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
+        className="flex-1 px-6"
         contentContainerStyle={{ paddingBottom: 100 }}>
-        <View className="flex-1 py-3">
-          <Text className="text-lg leading-relaxed">
-            Welcome to TTG! This application helps you find the perfect time to visit any location
-            or enjoy specific activities based on comprehensive historical data.
-          </Text>
-
-          <Text className="mt-4 text-lg leading-relaxed">
-            Using 10 years of historical information, we analyze weather patterns, wave conditions,
-            wind data, and forecasts from multiple reliable sources. Our algorithm processes this
-            data to provide you with the most favorable times for your planned activities.
-          </Text>
-
-          <Text className="mt-4 text-lg leading-relaxed">
-            For example, if you're planning to go kayak fishing in Marathon, Florida in July, our
-            app will analyze historical conditions and recommend the optimal dates and times. This
-            ensures you can make the most of your vacation while enjoying your favorite activities
-            in ideal conditions.
-          </Text>
-        </View>
+        {sections.map((section, index) => (
+          <AccordionSection
+            key={index}
+            title={section.title}
+            content={section.content}
+            isOpen={openSections[index]}
+            onToggle={() => toggleSection(index)}
+          />
+        ))}
       </ScrollView>
-      <View className="absolute bottom-10 items-center">
+      <View className="absolute bottom-10 w-full items-center">
         <TouchableOpacity onPress={() => router.navigate('/settings')}>
           <Settings />
         </TouchableOpacity>
