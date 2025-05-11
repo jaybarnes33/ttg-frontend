@@ -161,7 +161,6 @@ const Help = () => {
   ),
 },
 
-    },
   ];
 
   return (
