@@ -125,6 +125,7 @@ const AlertScreen = () => {
   }, [isSilent]); // Only re-run when silence state changes
 
   const handleClose = () => {
+    stopSound();
     router.push('/');
   };
 
@@ -144,6 +145,11 @@ const AlertScreen = () => {
     ]);
 
     Animated.loop(pulse).start();
+
+    // Cleanup function to stop sound when component unmounts
+    return () => {
+      stopSound();
+    };
   }, []);
 
   const bottom = [
