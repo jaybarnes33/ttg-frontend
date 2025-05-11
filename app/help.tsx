@@ -92,10 +92,17 @@ const Help = () => {
       image: require('~/assets/add.jpg'),
       content: (
         <Text className="text-base leading-relaxed">
-          Go to the "Add New Alert" screen. Enter a city, state, or GPS coordinates. Use the sliders
-          to set wind, wave, and tide limits. Any slider left unmoved is treated as N/A. Tap Save to
-          activate your alert.
-        </Text>
+  1. Go to the “Add New Alert” screen.{"\n"}
+  2. Enter a location using any of the following: city, state, address, or paste GPS coordinates (e.g., 26.743, -82.263).{"\n"}
+  3. (Optional) Enter your activity (e.g., paddling, fishing).{"\n"}
+  4. Set your preferred conditions using the sliders:{"\n"}
+     - Wind – set your max wind speed (e.g., under 10 mph){"\n"}
+     - Wave – set your max wave height (e.g., under 2 ft){"\n"}
+     - Tide – choose High, Medium, or Low, and optionally select a time range (e.g., 8–10 AM){"\n"}
+  5. Any setting left at N/A is ignored and treated as no preference.{"\n"}
+  6. Tap SAVE. You’ll return to the home screen and hear a sound confirming your alert was set.
+</Text>
+
       ),
     },
     {
