@@ -55,10 +55,13 @@ const Help = () => {
       title: '🔍 What Does TTG Do?',
       content: (
         <Text className="text-base leading-relaxed">
-          Time To Go (TTG) is a mobile alert app for outdoor lovers. It monitors wind, wave, and
-          tide forecasts. When your saved conditions match at one of your saved locations, TTG sends
-          a popup alert screen with a sonar-style PING sound. No checking. No stress. Just go.
-        </Text>
+  Time to Go (TTG) is an alert app designed for outdoor and water enthusiasts—like kayakers,
+  paddleboarders, fishermen, and small boat users. TTG monitors wind, wave, and tide conditions
+  at user-selected locations and sends a push notification with a full-screen pop-up alert when
+  the conditions match the user’s saved preferences.{"\n\n"}
+  No checking. No stress. Just know—it's Time To Go.
+</Text>
+
       ),
     },
     {
