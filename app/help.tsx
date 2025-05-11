@@ -160,6 +160,19 @@ const Help = () => {
     </Text>
   ),
 },
+  {
+    title: '🛠 TTG Settings',
+    content: (
+      <Text className="text-base leading-relaxed">
+        The Settings screen lets you customize how TTG alerts behave.{"\n\n"}
+        - Premium Signup: Upgrade to unlock real alerts. Demo mode only shows test alerts.{"\n"}
+        - Alert Duration: Choose how far in advance you want to be alerted (5, 3, 2, 1 days or same-day).{"\n"}
+        - Alert Frequency: Set how many alerts TTG can send per day.{"\n"}
+        - Sound Setting: Alerts include a sonar ping sound. Controlled by your phone's notification settings.
+      </Text>
+    ),
+  }
+];
 
 
   return (
