@@ -62,9 +62,11 @@ const Home = () => {
           <Text className="text-base font-bold uppercase text-white">Help</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleExitApp}>
-          <Text className="text-2xl font-bold uppercase ">Quit</Text>
-        </TouchableOpacity>
+        {Platform.OS !== 'ios' && (
+          <TouchableOpacity onPress={handleExitApp}>
+            <Text className="text-2xl font-bold uppercase ">Quit</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </Screen>
   );
