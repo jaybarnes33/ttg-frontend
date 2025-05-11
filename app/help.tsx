@@ -127,12 +127,16 @@ const Help = () => {
       content: (
         <Text className="text-base leading-relaxed">
   When your saved conditions match at one of your alert locations, TTG triggers an alert pop-up.{"\n\n"}
-  - A full-screen message appears with a sonar-style ping sound{"\n"}
-  - It shows a quick snapshot of the weather (e.g., "Clear and calm"){"\n"}
-  - You can tap to see more forecast details if desired{"\n"}
-  - Each alert includes a confidence rating shown as 1, 2, or 3 stars, based on how accurate the forecast is expected to be{"\n\n"}
-  Only alerts matching all your selected conditions will trigger.
+  - A full-screen screen appears with a sonar-style ping sound.{"\n"}
+  - It shows the location, timing, and all forecasted conditions (wind, wave, tide).{"\n"}
+  - The forecast box shows a quick summary and can be tapped for detailed info.{"\n"}
+  - Each alert includes a 1–3 star confidence rating based on forecast reliability.{"\n\n"}
+  At the bottom of the screen:{"\n"}
+  - Tap “Close Alert” to dismiss the alert.{"\n"}
+  - Tap “Silence Alarm” to stop the sound but leave the screen open.{"\n\n"}
+  Alerts only trigger when all your selected conditions match.
 </Text>
+
 
       ),
     },
