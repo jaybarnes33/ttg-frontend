@@ -140,6 +140,28 @@ const Help = () => {
 
       ),
     },
+{
+  title: '🌍 How to Paste GPS Coordinates',
+  content: (
+    <Text className="text-base leading-relaxed">
+      You can enter exact coordinates into TTG instead of a city or address. Here's how to copy them from common map apps:{"\n\n"}
+      From Google Maps:{"\n"}
+      - Tap and hold anywhere on the map to drop a red pin.{"\n"}
+      - The coordinates appear at the bottom.{"\n"}
+      - Tap to copy them.{"\n"}
+      - Paste into TTG’s location field.{"\n\n"}
+      From Apple Maps:{"\n"}
+      - Tap and hold on the map to drop a pin.{"\n"}
+      - Swipe up on the info card.{"\n"}
+      - Coordinates will be listed.{"\n"}
+      - Tap and hold to copy them.{"\n"}
+      - Paste into TTG’s location field.{"\n\n"}
+      Format example: 26.743, -82.263
+    </Text>
+  ),
+},
+
+    },
   ];
 
   return (
