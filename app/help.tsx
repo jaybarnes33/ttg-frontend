@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Logo from '~/components/Logo';
@@ -11,6 +11,7 @@ interface AccordionSectionProps {
   content: React.ReactNode;
   isOpen: boolean;
   onToggle: () => void;
+  image?: any;
 }
 
 const AccordionSection: React.FC<AccordionSectionProps> = ({
@@ -18,6 +19,7 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
   content,
   isOpen,
   onToggle,
+  image,
 }) => (
   <View className="mb-4 overflow-hidden rounded-lg border border-gray-200">
     <TouchableOpacity
@@ -26,7 +28,14 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
       <Text className="text-lg font-semibold">{title}</Text>
       <Text className="text-xl">{isOpen ? '−' : '+'}</Text>
     </TouchableOpacity>
-    {isOpen && <View className="p-4">{content}</View>}
+    {isOpen && (
+      <View className="p-4">
+        {image && (
+          <Image source={image} className=" mb-4 h-52 w-full rounded-lg" resizeMode="contain" />
+        )}
+        {content}
+      </View>
+    )}
   </View>
 );
 
@@ -43,7 +52,18 @@ const Help = () => {
 
   const sections = [
     {
+      title: '🔍 What Does TTG Do?',
+      content: (
+        <Text className="text-base leading-relaxed">
+          Time To Go (TTG) is a mobile alert app for outdoor lovers. It monitors wind, wave, and
+          tide forecasts. When your saved conditions match at one of your saved locations, TTG sends
+          a popup alert screen with a sonar-style PING sound. No checking. No stress. Just go.
+        </Text>
+      ),
+    },
+    {
       title: '🧪 DEMO MODE (Free Version)',
+      image: require('~/assets/demo.jpg'),
       content: (
         <View>
           <Text className="mb-3 text-base leading-relaxed">
@@ -63,18 +83,10 @@ const Help = () => {
         </View>
       ),
     },
-    {
-      title: '🔍 What Does TTG Do?',
-      content: (
-        <Text className="text-base leading-relaxed">
-          Time To Go (TTG) is a mobile alert app for outdoor lovers. It monitors wind, wave, and
-          tide forecasts. When your saved conditions match at one of your saved locations, TTG sends
-          a popup alert screen with a sonar-style PING sound. No checking. No stress. Just go.
-        </Text>
-      ),
-    },
+
     {
       title: '📍 How to Set an Alert',
+      image: require('~/assets/add.jpg'),
       content: (
         <Text className="text-base leading-relaxed">
           Go to the "Add New Alert" screen. Enter a city, state, or GPS coordinates. Use the sliders
@@ -85,6 +97,7 @@ const Help = () => {
     },
     {
       title: '🧭 Navigating Alerts',
+      image: require('~/assets/edit.jpg'),
       content: (
         <Text className="text-base leading-relaxed">
           Use arrow buttons at the top to navigate screens. Tap the logo to return to Home. In
@@ -94,6 +107,7 @@ const Help = () => {
     },
     {
       title: '🔔 Alert Pop-Up',
+      image: require('~/assets/alert.jpg'),
       content: (
         <Text className="text-base leading-relaxed">
           When conditions match, the TTG alert pop-up appears with your location, condition summary,
@@ -122,6 +136,7 @@ const Help = () => {
             content={section.content}
             isOpen={openSections[index]}
             onToggle={() => toggleSection(index)}
+            image={section.image}
           />
         ))}
       </ScrollView>

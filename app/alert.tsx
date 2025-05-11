@@ -2,6 +2,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, Alert, Animated } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { Audio } from 'expo-av';
 
 import { getTide } from './alerts';
 
@@ -21,11 +22,107 @@ const AlertScreen = () => {
 
   const router = useRouter();
   const pulseAnim = useRef(new Animated.Value(1)).current;
+  const soundRef = useRef<Audio.Sound | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isStoppingRef = useRef(false);
 
   const [isDemo, setIsDemo] = useState(false);
   const [isSilent, setIsSilent] = useState(false);
   const [windRating] = useState(() => Math.floor(Math.random() * 5) + 1);
   const [swellRating] = useState(() => Math.floor(Math.random() * 5) + 1);
+
+  const setupAudio = async () => {
+    try {
+      await Audio.setAudioModeAsync({
+        playsInSilentModeIOS: true,
+        staysActiveInBackground: true,
+        shouldDuckAndroid: true,
+        playThroughEarpieceAndroid: false,
+      });
+    } catch (error) {
+      console.error('Error setting up audio:', error);
+    }
+  };
+
+  const playAlertSound = async () => {
+    if (isSilent || isStoppingRef.current) return; // Don't play if silenced or stopping
+
+    try {
+      console.log('playing sound');
+      const { sound } = await Audio.Sound.createAsync(require('../assets/sounds/ring.mp3'), {
+        shouldPlay: true,
+      });
+
+      // Clean up previous sound if it exists
+      if (soundRef.current) {
+        await soundRef.current.unloadAsync();
+      }
+
+      soundRef.current = sound;
+    } catch (error) {
+      console.error('Error playing sound:', error);
+    }
+  };
+
+  const stopSound = async () => {
+    console.log('stopping sound');
+    isStoppingRef.current = true;
+
+    try {
+      if (soundRef.current) {
+        await soundRef.current.stopAsync();
+        await soundRef.current.unloadAsync();
+        soundRef.current = null;
+      }
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    } catch (error) {
+      console.error('Error stopping sound:', error);
+    } finally {
+      isStoppingRef.current = false;
+    }
+  };
+
+  // Single effect to handle all sound management
+  useEffect(() => {
+    console.log('Setting up sound management, silent:', isSilent);
+
+    // Initial setup
+    setupAudio();
+
+    // Clear any existing interval
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    // Stop any existing sound
+    stopSound();
+
+    // Only set up interval if not silent
+    if (!isSilent) {
+      // Small delay before starting new sound
+      setTimeout(() => {
+        if (!isSilent) {
+          // Double check we're still not silent
+          playAlertSound();
+          intervalRef.current = setInterval(playAlertSound, 5000);
+        }
+      }, 100);
+    }
+
+    // Cleanup
+    return () => {
+      console.log('Cleaning up sound management');
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      stopSound();
+    };
+  }, [isSilent]); // Only re-run when silence state changes
 
   const handleClose = () => {
     router.push('/');
@@ -52,7 +149,7 @@ const AlertScreen = () => {
   const bottom = [
     {
       icon: <Silent />,
-      text: 'Silent Alert',
+      text: isSilent ? 'Unmute Alert' : 'Silent Alert',
       onPress: () => setIsSilent(!isSilent),
     },
 
