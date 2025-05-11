@@ -113,10 +113,14 @@ const Help = () => {
       image: require('~/assets/alert.jpg'),
       content: (
         <Text className="text-base leading-relaxed">
-          When conditions match, the TTG alert pop-up appears with your location, condition summary,
-          and forecast. Tap the forecast icon for more detail. Use CLOSE ALERT to stop the sound and
-          exit the screen.
-        </Text>
+  When your saved conditions match at one of your alert locations, TTG triggers an alert pop-up.{"\n\n"}
+  - A full-screen message appears with a sonar-style ping sound{"\n"}
+  - It shows a quick snapshot of the weather (e.g., "Clear and calm"){"\n"}
+  - You can tap to see more forecast details if desired{"\n"}
+  - Each alert includes a confidence rating shown as 1, 2, or 3 stars, based on how accurate the forecast is expected to be{"\n\n"}
+  Only alerts matching all your selected conditions will trigger.
+</Text>
+
       ),
     },
   ];
