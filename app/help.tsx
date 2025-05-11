@@ -161,9 +161,6 @@ const Help = () => {
   ),
 },
 
-  ];
-
-  ];
 
   return (
     <SafeAreaView className="relative flex-1 bg-white">
