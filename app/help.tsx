@@ -31,7 +31,7 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
     {isOpen && (
       <View className="p-4">
         {image && (
-          <Image source={image} className=" mb-4 h-52 w-full rounded-lg" resizeMode="contain" />
+          <Image source={image} className=" mb-4  h-72 w-full rounded-lg" resizeMode="contain" />
         )}
         {content}
       </View>
