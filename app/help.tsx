@@ -160,15 +160,7 @@ const Help = () => {
     </Text>
   ),
 },
-    },
-    {
-      title: '🌍 How to Paste GPS Coordinates',
-      content: (
-        <Text className="text-base leading-relaxed">
-          ...content...
-        </Text>
-      ),
-    }
+
   ];
 
   ];
