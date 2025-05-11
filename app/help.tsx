@@ -110,9 +110,15 @@ const Help = () => {
       image: require('~/assets/edit.jpg'),
       content: (
         <Text className="text-base leading-relaxed">
-          Use arrow buttons at the top to navigate screens. Tap the logo to return to Home. In
-          View/Edit Alerts, you can adjust wind, wave, and tide conditions, but not location.
-        </Text>
+  Time to Go has a simple screen layout with four main screens:{"\n\n"}
+  - Home: Shows alert summaries and access to features.{"\n"}
+  - Add Alert: Lets you create a new alert with your preferred wind, wave, and tide settings.{"\n"}
+  - Edit/View Alerts: Lets you review and adjust saved alerts. You can edit conditions, not location.{"\n"}
+  - Pop-Up Alert: This only appears when conditions match. Shows sonar-style alert and weather info.{"\n\n"}
+  Use the arrows at the top of the screen to move between Home, Add Alert, and Edit/View Alerts.{"\n"}
+  Tap the TTG logo to return to Home—except on the pop-up screen, where the logo is hidden.
+</Text>
+
       ),
     },
     {
