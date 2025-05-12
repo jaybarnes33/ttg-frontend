@@ -171,7 +171,20 @@ const Help = () => {
         - Sound Setting: Alerts include a sonar ping sound. Controlled by your phone's notification settings.
       </Text>
     ),
-  }
+  },
+    {
+  title: '📩 Feedback',
+  content: (
+    <Text className="text-base leading-relaxed">
+      Got ideas to make Time To Go better? Found a bug? We’d love to hear from you.{"\n\n"}
+      Please email us at:{" "}
+      <Text className="font-semibold">support@timetoogo.com</Text>{"\n"}
+      Your feedback helps us improve the app for everyone.{"\n\n"}
+      We read every message — thank you!
+    </Text>
+  ),
+}
+
 ];
 
 
