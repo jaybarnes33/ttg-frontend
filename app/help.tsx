@@ -55,70 +55,59 @@ const Help = () => {
       title: '🔍 What Does TTG Do?',
       content: (
         <Text className="text-base leading-relaxed">
-  Time to Go (TTG) is an alert app designed for outdoor and water enthusiasts—like kayakers,
-  paddleboarders, fishermen, and small boat users. TTG monitors wind, wave, and tide conditions
-  at user-selected locations and sends a push notification with a full-screen pop-up alert when
-  the conditions match the user’s saved preferences.{"\n\n"}
-  No checking. No stress. Just know—it's Time To Go.
-</Text>
-
+          Time To Go (TTG) is an alert app designed for outdoor and water enthusiasts—like kayakers,
+          paddleboarders, fishermen, and small boat users. TTG monitors wind, wave, and tide conditions
+          at user-selected locations and sends a push notification when your saved conditions match.
+          Tapping the notification opens a full-screen alert pop-up. A sonar-style PING sound plays every
+          5 seconds until you close the pop-up or hit the "Silence Alert" button. No checking. No stress.
+          Just know—it's Time To Go.
+        </Text>
       ),
     },
     {
       title: '🧪 DEMO MODE (Free Version)',
       image: require('~/assets/demo.jpg'),
       content: (
-        <View>
-          <Text className="mb-3 text-base leading-relaxed">
-            When you first install Time To Go, the app launches in Demo Mode so you can try it out
-            risk-free.{'\n'}- Add an alert location just like the real version{'\n'}- A sample alert
-            will appear ~5 minutes later{'\n'}- This alert shows fake (demo) conditions, not
-            real-time weather{'\n'}- You'll see the full pop-up alert screen, sound (PING), and
-            forecast layout{'\n'}- This is to demonstrate how alerts function—not actual conditions
-            {'\n\n'}
-            App Store Reviewers Note: This is a fully functional demo of the alert system. No real
-            weather data is shown until the user upgrades.
-          </Text>
-          <Text className="text-base leading-relaxed">
-            To activate live alerts based on real wind, wave, and tide forecasts, upgrade to the
-            full version for $7.99/year.
-          </Text>
-        </View>
+        <Text className="text-base leading-relaxed">
+          When you first install Time To Go, the app launches in Demo Mode so you can try it out risk-free.
+          {'\n'}- Add an alert location just like the real version
+          {'\n'}- A sample alert will appear ~5 minutes later
+          {'\n'}- This alert shows fake (demo) conditions, not real-time weather
+          {'\n'}- You'll see the full pop-up alert screen, sound (PING), and forecast layout
+          {'\n'}- This is to demonstrate how alerts function—not actual conditions
+          {'\n\n'}App Store Reviewers Note: This is a fully functional demo of the alert system. No real weather data is shown until the user upgrades.
+          {'\n\n'}To activate live alerts based on real wind, wave, and tide forecasts, upgrade to the full version for $7.99/year.
+        </Text>
       ),
     },
-
     {
       title: '📍 How to Set an Alert',
       image: require('~/assets/add.jpg'),
       content: (
         <Text className="text-base leading-relaxed">
-  1. Go to the “Add New Alert” screen.{"\n"}
-  2. Enter a location using any of the following: city, state, address, or paste GPS coordinates (e.g., 26.743, -82.263).{"\n"}
-  3. (Optional) Enter your activity (e.g., paddling, fishing).{"\n"}
-  4. Set your preferred conditions using the sliders:{"\n"}
-     - Wind – set your max wind speed (e.g., under 10 mph){"\n"}
-     - Wave – set your max wave height (e.g., under 2 ft){"\n"}
-     - Tide – choose High, Medium, or Low, and optionally select a time range (e.g., 8–10 AM){"\n"}
-  5. Any setting left at N/A is ignored and treated as no preference.{"\n"}
-  6. Tap SAVE. You’ll return to the home screen and hear a sound confirming your alert was set.
-</Text>
-
+          1. Go to the “Add New Alert” screen.{"\n"}
+          2. Enter a location using city, state, address, or GPS coordinates (e.g., 26.743, -82.263).{"\n"}
+          3. (Optional) Enter your activity (e.g., paddling, fishing).{"\n"}
+          4. Set your preferred conditions using the sliders:{"\n"}
+             - Wind – up to 20 mph max{"\n"}
+             - Wave – up to 10 feet max{"\n"}
+             - Tide – choose Low, Medium, or High and a 3-hour time block (e.g., 6–9 AM){"\n"}
+          5. Leave any setting at N/A if you have no preference.{"\n"}
+          6. Tap SAVE. A confirmation sound will play.
+        </Text>
       ),
     },
     {
-      title: '🧭 Navigating Alerts',
+      title: '🧭 Navigating the App',
       image: require('~/assets/edit.jpg'),
       content: (
         <Text className="text-base leading-relaxed">
-  Time to Go has a simple screen layout with four main screens:{"\n\n"}
-  - Home: Shows alert summaries and access to features.{"\n"}
-  - Add Alert: Lets you create a new alert with your preferred wind, wave, and tide settings.{"\n"}
-  - Edit/View Alerts: Lets you review and adjust saved alerts. You can edit conditions, not location.{"\n"}
-  - Pop-Up Alert: This only appears when conditions match. Shows sonar-style alert and weather info.{"\n\n"}
-  Use the arrows at the top of the screen to move between Home, Add Alert, and Edit/View Alerts.{"\n"}
-  Tap the TTG logo to return to Home—except on the pop-up screen, where the logo is hidden.
-</Text>
-
+          Time To Go has three main navigable screens, accessed using the arrow icons at the top:
+          {'\n\n'}- Home Screen: Includes five buttons — Add Alerts, View/Edit Alerts, Settings, Help, and Quit App.
+          {'\n'}- Add New Alert: Create a new alert with your chosen wind, wave, and tide settings.
+          {'\n'}- Alerts – Edit / Read: Review and adjust existing alerts. Conditions can be changed, but not the location.
+          {'\n\n'}Tap the TTG logo to return to Home (except during a pop-up alert).
+        </Text>
       ),
     },
     {
@@ -126,67 +115,62 @@ const Help = () => {
       image: require('~/assets/alert.jpg'),
       content: (
         <Text className="text-base leading-relaxed">
-  When your saved conditions match at one of your alert locations, TTG triggers an alert pop-up.{"\n\n"}
-  - A full-screen screen appears with a sonar-style ping sound.{"\n"}
-  - It shows the location, timing, and all forecasted conditions (wind, wave, tide).{"\n"}
-  - The forecast box shows a quick summary and can be tapped for detailed info.{"\n"}
-  - Each alert includes a 1–3 star confidence rating based on forecast reliability.{"\n\n"}
-  At the bottom of the screen:{"\n"}
-  - Tap “Close Alert” to dismiss the alert.{"\n"}
-  - Tap “Silence Alarm” to stop the sound but leave the screen open.{"\n\n"}
-  Alerts only trigger when all your selected conditions match.
-</Text>
-
-
+          TTG triggers a push notification when your saved conditions match.{"\n"}
+          Tapping the notification opens a full-screen alert pop-up.{"\n"}
+          A sonar-style PING sound plays every 5 seconds until you close the pop-up or hit the "Silence Alert" button.{"\n"}
+          The pop-up displays the location, time block, and matching forecasted conditions including wind, wave, and tide.{"\n"}
+          The forecast summary box can be tapped to view more detailed weather information.{"\n"}
+          Each alert includes a 1–3 star confidence rating based on how well forecast sources agree.{"\n\n"}
+          Tap "Close Alert" to dismiss the alert and stop the sound.{"\n"}
+          Tap "Silence Alert" to stop the sound but leave the pop-up on screen.
+        </Text>
       ),
     },
-{
-  title: '🌍 How to Paste GPS Coordinates',
-  content: (
-    <Text className="text-base leading-relaxed">
-      You can enter exact coordinates into TTG instead of a city or address. Here's how to copy them from common map apps:{"\n\n"}
-      From Google Maps:{"\n"}
-      - Tap and hold anywhere on the map to drop a red pin.{"\n"}
-      - The coordinates appear at the bottom.{"\n"}
-      - Tap to copy them.{"\n"}
-      - Paste into TTG’s location field.{"\n\n"}
-      From Apple Maps:{"\n"}
-      - Tap and hold on the map to drop a pin.{"\n"}
-      - Swipe up on the info card.{"\n"}
-      - Coordinates will be listed.{"\n"}
-      - Tap and hold to copy them.{"\n"}
-      - Paste into TTG’s location field.{"\n\n"}
-      Format example: 26.743, -82.263
-    </Text>
-  ),
-},
-  {
-    title: '🛠 TTG Settings',
-    content: (
-      <Text className="text-base leading-relaxed">
-        The Settings screen lets you customize how TTG alerts behave.{"\n\n"}
-        - Premium Signup: Upgrade to unlock real alerts. Demo mode only shows test alerts.{"\n"}
-        - Alert Duration: Choose how far in advance you want to be alerted (5, 3, 2, 1 days or same-day).{"\n"}
-        - Alert Frequency: Set how many alerts TTG can send per day.{"\n"}
-        - Sound Setting: Alerts include a sonar ping sound. Controlled by your phone's notification settings.
-      </Text>
-    ),
-  },
     {
-  title: '📩 Feedback',
-  content: (
-    <Text className="text-base leading-relaxed">
-      Got ideas to make Time To Go better? Found a bug? We’d love to hear from you.{"\n\n"}
-      Please email us at:{" "}
-      <Text className="font-semibold">support@timetoogo.com</Text>{"\n"}
-      Your feedback helps us improve the app for everyone.{"\n\n"}
-      We read every message — thank you!
-    </Text>
-  ),
-}
-
-];
-
+      title: '🌍 How to Paste GPS Coordinates',
+      content: (
+        <Text className="text-base leading-relaxed">
+          You can enter exact coordinates instead of a city or address. Here's how to copy them from common map apps:{"\n\n"}
+          From Google Maps:{"\n"}
+          - Tap and hold anywhere on the map to drop a red pin.{"\n"}
+          - The coordinates appear at the bottom.{"\n"}
+          - Tap to copy them.{"\n"}
+          - Paste into TTG’s location field.{"\n\n"}
+          From Apple Maps:{"\n"}
+          - Tap and hold on the map to drop a pin.{"\n"}
+          - Swipe up on the info card.{"\n"}
+          - Coordinates will be listed.{"\n"}
+          - Tap and hold to copy them.{"\n"}
+          - Paste into TTG’s location field.{"\n\n"}
+          Format example: 26.743, -82.263
+        </Text>
+      ),
+    },
+    {
+      title: '🛠 TTG Settings',
+      content: (
+        <Text className="text-base leading-relaxed">
+          The Settings screen lets you customize how TTG alerts behave.{"\n\n"}
+          - Premium Signup: Upgrade to unlock real alerts. Demo mode only shows test alerts.{"\n"}
+          - Alert Duration: Choose how far in advance you want to be alerted (5, 3, 2, 1 days or same-day).{"\n"}
+          - Alert Frequency: Set how many alerts TTG can send per day.{"\n"}
+          - Sound Setting: Toggle the alert sound on or off. When enabled, a sonar-style ping plays every 5 seconds during alerts. The sound cannot be customized.
+        </Text>
+      ),
+    },
+    {
+      title: '📩 Feedback',
+      content: (
+        <Text className="text-base leading-relaxed">
+          Got ideas to make Time To Go better? Found a bug? We’d love to hear from you.{"\n\n"}
+          Please email us at:{"\n"}
+          <Text className="font-semibold">support@timetoogo.com</Text>{"\n\n"}
+          Your feedback helps us improve the app for everyone.{"\n"}
+          We read every message — thank you!
+        </Text>
+      ),
+    },
+  ];
 
   return (
     <SafeAreaView className="relative flex-1 bg-white">
