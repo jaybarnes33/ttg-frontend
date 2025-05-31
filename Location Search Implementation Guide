@@ -1,0 +1,107 @@
+**TTG App: Location Search Implementation Guide (Frontend)**
+
+**Purpose:**
+Replace the geocoding input field ("city, state") on the "Add New Alert" screen with a local searchable list of real coastal and Great Lakes locations (e.g., boat ramps, parks, beaches). This avoids API costs and GPS dependency.
+
+---
+
+**New Behavior Summary:**
+
+* User starts typing in the LOCATION field
+* A dropdown appears with autocomplete suggestions from a preloaded list (`locations.json`)
+* User selects a match
+* The app stores the `name`, `lat`, `lng`, and `type` for backend alert logic
+* No external API calls or GPS used
+
+---
+
+**JSON File Structure (locations.json):**
+Each item in the list has the following format:
+
+```json
+{
+  "name": "Juno Beach Pier",
+  "lat": 26.8797,
+  "lng": -80.0513,
+  "type": "pier"
+}
+```
+
+There are thousands of real-world entries tagged from OpenStreetMap.
+
+---
+
+**Frontend Tech Options (React Native):**
+
+**Option 1: `react-native-autocomplete-input`**
+
+* Quick setup
+* Handles dropdown UI out-of-the-box
+* Filters list as user types
+
+**Option 2: Custom Search with FlatList + TextInput**
+
+* Full control
+* No external library
+* Recommended if you want complete styling control
+
+---
+
+**Basic Implementation Logic:**
+
+```js
+import locations from './data/locations.json';
+
+const [query, setQuery] = useState('');
+const [filtered, setFiltered] = useState([]);
+const [selectedLocation, setSelectedLocation] = useState(null);
+
+useEffect(() => {
+  if (query.length >= 2) {
+    const results = locations.filter(loc =>
+      loc.name.toLowerCase().includes(query.toLowerCase())
+    );
+    setFiltered(results);
+  } else {
+    setFiltered([]);
+  }
+}, [query]);
+
+// On selection
+const onSelect = (item) => {
+  setQuery(item.name);
+  setSelectedLocation(item); // contains lat/lng/type
+  setFiltered([]);
+};
+```
+
+---
+
+**On Save Button:**
+When user taps SAVE, the alert should use:
+
+* `selectedLocation.lat`
+* `selectedLocation.lng`
+* `selectedLocation.name`
+* `selectedLocation.type`
+
+These values must be passed to the backend logic to match with forecast data.
+
+---
+
+**Fallback Case:**
+If user doesn’t find a match, fallback is to let them paste GPS coordinates manually — already covered in the help screen.
+
+---
+
+**Summary for Developer:**
+
+* Remove geocoding
+* Replace LOCATION input with a local search dropdown (using `locations.json`)
+* Must support real-time filtering
+* Must return full location object to store with each alert
+* No online API lookups — everything is local
+
+---
+
+Let us know if anything in the JSON format needs adjusting — we can regenerate it.
