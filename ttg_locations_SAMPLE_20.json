@@ -1,0 +1,182 @@
+[
+  {
+    "display_name": "East Natashamouth \u2013 Lauren Pike \u2013 Boat Ramp",
+    "city": "East Natashamouth",
+    "name": "Lauren Pike",
+    "type": "boat_ramp",
+    "lat": 33.288376,
+    "lon": -98.680841,
+    "region": "NY"
+  },
+  {
+    "display_name": "East Tiffany \u2013 Calderon Cliffs \u2013 Beach",
+    "city": "East Tiffany",
+    "name": "Calderon Cliffs",
+    "type": "beach",
+    "lat": 34.730644,
+    "lon": -117.365613,
+    "region": "NY"
+  },
+  {
+    "display_name": "Carlaburgh \u2013 Mary Drive \u2013 Campground",
+    "city": "Carlaburgh",
+    "name": "Mary Drive",
+    "type": "campground",
+    "lat": 12.165244,
+    "lon": -78.562842,
+    "region": "FL"
+  },
+  {
+    "display_name": "Johnnymouth \u2013 Garcia Tunnel \u2013 Pier",
+    "city": "Johnnymouth",
+    "name": "Garcia Tunnel",
+    "type": "pier",
+    "lat": 51.801049,
+    "lon": -95.60652,
+    "region": "MX"
+  },
+  {
+    "display_name": "East Justinburgh \u2013 Merritt Pines \u2013 Inlet",
+    "city": "East Justinburgh",
+    "name": "Merritt Pines",
+    "type": "inlet",
+    "lat": 27.481937,
+    "lon": -69.28291,
+    "region": "CA"
+  },
+  {
+    "display_name": "Port Paulaborough \u2013 Stevens Field \u2013 City",
+    "city": "Port Paulaborough",
+    "name": "Stevens Field",
+    "type": "city",
+    "lat": 18.467253,
+    "lon": -148.685534,
+    "region": "NY"
+  },
+  {
+    "display_name": "Aliciahaven \u2013 Michael Passage \u2013 Boat Ramp",
+    "city": "Aliciahaven",
+    "name": "Michael Passage",
+    "type": "boat_ramp",
+    "lat": 18.451275,
+    "lon": -100.490461,
+    "region": "CA"
+  },
+  {
+    "display_name": "Johnland \u2013 Black Roads \u2013 Park",
+    "city": "Johnland",
+    "name": "Black Roads",
+    "type": "park",
+    "lat": 58.210409,
+    "lon": -140.740779,
+    "region": "TX"
+  },
+  {
+    "display_name": "North Lauren \u2013 Michael Cape \u2013 Inlet",
+    "city": "North Lauren",
+    "name": "Michael Cape",
+    "type": "inlet",
+    "lat": 53.344102,
+    "lon": -91.479894,
+    "region": "NY"
+  },
+  {
+    "display_name": "Lake Christinaville \u2013 Kennedy Points \u2013 Park",
+    "city": "Lake Christinaville",
+    "name": "Kennedy Points",
+    "type": "park",
+    "lat": 52.287266,
+    "lon": -131.664513,
+    "region": "LA"
+  },
+  {
+    "display_name": "Port Anthonymouth \u2013 Brooks Lodge \u2013 Park",
+    "city": "Port Anthonymouth",
+    "name": "Brooks Lodge",
+    "type": "park",
+    "lat": 15.141379,
+    "lon": -91.952107,
+    "region": "BC"
+  },
+  {
+    "display_name": "Hamiltonshire \u2013 William Lock \u2013 Inlet",
+    "city": "Hamiltonshire",
+    "name": "William Lock",
+    "type": "inlet",
+    "lat": 17.862358,
+    "lon": -83.342297,
+    "region": "LA"
+  },
+  {
+    "display_name": "Michaelmouth \u2013 Danielle Rapid \u2013 Inlet",
+    "city": "Michaelmouth",
+    "name": "Danielle Rapid",
+    "type": "inlet",
+    "lat": 41.224513,
+    "lon": -119.840427,
+    "region": "BC"
+  },
+  {
+    "display_name": "South Ashley \u2013 Monica Mills \u2013 Pier",
+    "city": "South Ashley",
+    "name": "Monica Mills",
+    "type": "pier",
+    "lat": 11.847671,
+    "lon": -140.862578,
+    "region": "ON"
+  },
+  {
+    "display_name": "Wagnerton \u2013 Jose Light \u2013 Beach",
+    "city": "Wagnerton",
+    "name": "Jose Light",
+    "type": "beach",
+    "lat": 31.428457,
+    "lon": -69.41357,
+    "region": "LA"
+  },
+  {
+    "display_name": "Abigailborough \u2013 Jesse Rapids \u2013 Beach",
+    "city": "Abigailborough",
+    "name": "Jesse Rapids",
+    "type": "beach",
+    "lat": 39.228829,
+    "lon": -72.174433,
+    "region": "FL"
+  },
+  {
+    "display_name": "Lamport \u2013 Dean Mall \u2013 Park",
+    "city": "Lamport",
+    "name": "Dean Mall",
+    "type": "park",
+    "lat": 23.170338,
+    "lon": -83.127136,
+    "region": "TX"
+  },
+  {
+    "display_name": "Masonview \u2013 Ibarra Rapids \u2013 City",
+    "city": "Masonview",
+    "name": "Ibarra Rapids",
+    "type": "city",
+    "lat": 27.45761,
+    "lon": -136.645943,
+    "region": "ON"
+  },
+  {
+    "display_name": "Johntown \u2013 Ibarra Forge \u2013 Beach",
+    "city": "Johntown",
+    "name": "Ibarra Forge",
+    "type": "beach",
+    "lat": 43.198308,
+    "lon": -92.804535,
+    "region": "BC"
+  },
+  {
+    "display_name": "Wallacefort \u2013 Hernandez Road \u2013 Beach",
+    "city": "Wallacefort",
+    "name": "Hernandez Road",
+    "type": "beach",
+    "lat": 54.550296,
+    "lon": -79.505064,
+    "region": "NY"
+  }
+]
