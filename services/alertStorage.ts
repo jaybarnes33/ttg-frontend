@@ -1,24 +1,28 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { notificationsService } from './notifications';
-import { SchedulableTriggerInputTypes } from 'expo-notifications';
+
+import { Location } from '~/types/global';
 
 export type Alert = {
   id: string;
-  location: string;
+  location: Location;
   activity: string;
   threshold: {
     maxWindSpeed: number;
     maxWaveHeight: number;
     tide: number;
-    tideTime: string;
+    tideTime: {
+      start: number | null; // e.g., '06:00'
+      end: number | null; // e.g., '09:00'
+    };
   };
   active: boolean;
   createdAt: string;
   notificationId?: string;
 };
 
-const ALERTS_STORAGE_KEY = '@sailor_alerts';
+const ALERTS_STORAGE_KEY = '@ttg_local';
 
 export const alertStorage = {
   async getAlerts(): Promise<Alert[]> {

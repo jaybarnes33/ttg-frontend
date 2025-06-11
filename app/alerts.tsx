@@ -1,19 +1,10 @@
 import { MaterialIcons } from '@expo/vector-icons';
+import clsx from 'clsx';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-} from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
 
-import Input from '~/components/Input';
 import Screen from '~/components/Layout/Screen';
 import SliderInput from '~/components/SliderInput';
 import AlertIcon from '~/components/icons/Alert';
@@ -150,15 +141,22 @@ const Alerts = () => {
     );
   };
 
-  const renderAlert = () =>
-    activeItem && (
-      <ScrollView className="flex-1 border-y border-teal-300 bg-[#d1e8e2] px-4 py-2">
-        <View>
-          <Text className="text-center text-xl font-bold uppercase">Location</Text>
-
-          <View className="h-[41px] items-center justify-center border-2  border-black bg-white">
-            <Text className="text-center text-3xl font-bold uppercase">{activeItem?.location}</Text>
-          </View>
+  const renderAlert = () => {
+    const location = activeItem?.location;
+    const name = `${location?.CITY}, ${location?.ST}`;
+    return (
+      <View className="flex-1 border-y border-teal-300 bg-[#d1e8e2] px-4 py-2">
+        <View className="relative z-10 -mt-7 items-center justify-center gap-y-2 border-2 border-black  bg-white py-2">
+          <Text
+            className={clsx([
+              'text-center  font-bold uppercase',
+              name.length > 10 ? 'text-3xl' : 'text-4xl',
+            ])}>
+            {location?.CITY}, {location?.ST}
+          </Text>
+          {location?.NAME && (
+            <Text className="text-center text-2xl font-semibold">{location?.NAME}</Text>
+          )}
         </View>
 
         <View className="mt-3 flex-1 gap-4">
@@ -166,7 +164,7 @@ const Alerts = () => {
             disabled={!editMode}
             max={20}
             label="Wind"
-            value={activeItem.threshold.maxWindSpeed}
+            value={activeItem!.threshold.maxWindSpeed}
             onChange={(value) => {
               if (activeItem) {
                 setActiveItem({
@@ -186,7 +184,7 @@ const Alerts = () => {
             disabled={!editMode}
             max={10}
             label="Wave"
-            value={activeItem.threshold.maxWaveHeight}
+            value={activeItem!.threshold.maxWaveHeight}
             onChange={(value) => {
               if (activeItem) {
                 setActiveItem({
@@ -211,7 +209,7 @@ const Alerts = () => {
               </Text>
             }
             label="Tide"
-            value={activeItem.threshold.tide}
+            value={activeItem!.threshold.tide}
             onChange={(value) => {
               if (activeItem) {
                 setActiveItem({
@@ -228,8 +226,9 @@ const Alerts = () => {
           }>
           <Text>Preview</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     );
+  };
 
   if (loading) {
     return (
@@ -241,97 +240,92 @@ const Alerts = () => {
 
   return (
     <Screen>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className="flex-1"
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 25}>
-        {alerts.length === 0 ? (
-          <>
-            <View className="flex-1 items-center justify-center p-6">
-              <Text className="mb-4 text-center text-gray-600">
-                No alerts set. Create one to get started!
-              </Text>
-            </View>
+      {alerts.length === 0 ? (
+        <>
+          <View className="flex-1 items-center justify-center p-6">
+            <Text className="mb-4 text-center text-gray-600">
+              No alerts set. Create one to get started!
+            </Text>
+          </View>
 
-            <TouchableOpacity
-              className="absolute bottom-6 right-6 h-14 w-14 items-center justify-center rounded-full bg-black shadow-lg"
-              onPress={() => navigate('/alert-form')}>
-              <MaterialIcons name="add" size={30} color="white" />
-            </TouchableOpacity>
-          </>
-        ) : (
-          <>
-            <View className="items-center py-4">
-              <Text style={{ fontSize: moderateScale(41) }} className="font-extrabold text-white">
-                ALERTS
-              </Text>
-            </View>
+          <TouchableOpacity
+            className="absolute bottom-6 right-6 h-14 w-14 items-center justify-center rounded-full bg-black shadow-lg"
+            onPress={() => navigate('/alert-form')}>
+            <MaterialIcons name="add" size={30} color="white" />
+          </TouchableOpacity>
+        </>
+      ) : (
+        <>
+          <View className="items-center py-4">
+            <Text style={{ fontSize: moderateScale(41) }} className="font-extrabold text-white">
+              ALERTS
+            </Text>
+          </View>
 
-            {renderAlert()}
+          {renderAlert()}
 
-            <View className="mt-auto">
-              {/* Indicators */}
-              <View className="flex-row items-center justify-between gap-4 px-4 py-4">
-                <TouchableOpacity onPress={goToPrevious} disabled={alerts.length <= 1}>
-                  <Chevron
-                    size={moderateScale(30)}
-                    direction="left"
-                    color={alerts.length > 1 ? 'black' : 'gray'}
+          <View className="mt-auto">
+            {/* Indicators */}
+            <View className="flex-row items-center justify-between gap-4 px-4 py-4">
+              <TouchableOpacity onPress={goToPrevious} disabled={alerts.length <= 1}>
+                <Chevron
+                  size={moderateScale(30)}
+                  direction="left"
+                  color={alerts.length > 1 ? 'black' : 'gray'}
+                />
+              </TouchableOpacity>
+              {[0, 1, 2, 3].map((index) => (
+                <TouchableOpacity
+                  key={index}
+                  disabled={alerts.length - 1 < index}
+                  onPress={() => alerts.length - 1 >= index && setCurrentIndex(index)}>
+                  <AlertIcon
+                    key={`alert-${index}`}
+                    size={moderateScale(40)}
+                    state={
+                      index < alerts.length
+                        ? index === currentIndex
+                          ? 'active'
+                          : 'filled'
+                        : 'muted'
+                    }
                   />
                 </TouchableOpacity>
-                {[0, 1, 2, 3].map((index) => (
-                  <TouchableOpacity
-                    key={index}
-                    disabled={alerts.length - 1 < index}
-                    onPress={() => alerts.length - 1 >= index && setCurrentIndex(index)}>
-                    <AlertIcon
-                      key={`alert-${index}`}
-                      size={moderateScale(40)}
-                      state={
-                        index < alerts.length
-                          ? index === currentIndex
-                            ? 'active'
-                            : 'filled'
-                          : 'muted'
-                      }
-                    />
-                  </TouchableOpacity>
-                ))}
-                <TouchableOpacity onPress={goToNext} disabled={alerts.length <= 1}>
-                  <Chevron
-                    size={moderateScale(30)}
-                    direction="right"
-                    color={alerts.length > 1 ? 'black' : 'gray'}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View className="flex-row justify-evenly pb-4">
-                <TouchableOpacity onPress={handleEdit}>
-                  <Text
-                    style={{ fontSize: moderateScale(26) }}
-                    className="font-bold uppercase text-black">
-                    {editMode ? 'CANCEL' : 'EDIT'}
-                  </Text>
-                </TouchableOpacity>
-                {activeItem && (
-                  <TouchableOpacity onPress={handleDelete}>
-                    <Delete />
-                  </TouchableOpacity>
-                )}
-                <TouchableOpacity onPress={handleSave} disabled={!editMode || !hasChanges()}>
-                  <Text
-                    style={{ fontSize: moderateScale(26) }}
-                    className={`font-bold uppercase ${
-                      editMode && hasChanges() ? 'text-black' : 'text-gray-400'
-                    }`}>
-                    SAVE
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              ))}
+              <TouchableOpacity onPress={goToNext} disabled={alerts.length <= 1}>
+                <Chevron
+                  size={moderateScale(30)}
+                  direction="right"
+                  color={alerts.length > 1 ? 'black' : 'gray'}
+                />
+              </TouchableOpacity>
             </View>
-          </>
-        )}
-      </KeyboardAvoidingView>
+            <View className="flex-row justify-evenly pb-4">
+              <TouchableOpacity onPress={handleEdit}>
+                <Text
+                  style={{ fontSize: moderateScale(26) }}
+                  className="font-bold uppercase text-black">
+                  {editMode ? 'CANCEL' : 'EDIT'}
+                </Text>
+              </TouchableOpacity>
+              {activeItem && (
+                <TouchableOpacity onPress={handleDelete}>
+                  <Delete />
+                </TouchableOpacity>
+              )}
+              <TouchableOpacity onPress={handleSave} disabled={!editMode || !hasChanges()}>
+                <Text
+                  style={{ fontSize: moderateScale(26) }}
+                  className={`font-bold uppercase ${
+                    editMode && hasChanges() ? 'text-black' : 'text-gray-400'
+                  }`}>
+                  SAVE
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </>
+      )}
     </Screen>
   );
 };

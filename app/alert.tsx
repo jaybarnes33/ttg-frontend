@@ -15,6 +15,8 @@ import Tide from '~/components/icons/Tide';
 import Wind from '~/components/icons/Wind';
 import StarRating from '~/components/StarRating';
 import { Alert as AlertType, alertStorage } from '~/services/alertStorage';
+import clsx from 'clsx';
+import { getTime } from '~/utils/time';
 
 const AlertScreen = () => {
   const { alertData } = useLocalSearchParams();
@@ -31,6 +33,7 @@ const AlertScreen = () => {
   const [windRating] = useState(() => Math.floor(Math.random() * 5) + 1);
   const [swellRating] = useState(() => Math.floor(Math.random() * 5) + 1);
 
+  console.log({ parsed });
   const setupAudio = async () => {
     try {
       await Audio.setAudioModeAsync({
@@ -167,6 +170,7 @@ const AlertScreen = () => {
       onPress: handleClose,
     },
   ];
+  const name = `${parsed.location.CITY}, ${parsed.location.ST}`;
 
   return (
     <Screen hideArrows>
@@ -186,10 +190,21 @@ const AlertScreen = () => {
             Location
           </Text>
           <Text
-            style={{ fontSize: moderateScale(parsed.location.length > 10 ? 25 : 40) }}
-            className="text-center font-bold uppercase">
-            {parsed.location}
+            className={clsx([
+              'text-center font-bold uppercase',
+              name.length > 13 ? 'text-3xl' : 'text-[34px]',
+            ])}>
+            {name}
           </Text>
+          {parsed.location.NAME && (
+            <Text
+              style={{
+                fontSize: parsed.location.NAME.length > 13 ? moderateScale(20) : moderateScale(27),
+              }}
+              className="text-center font-bold">
+              {parsed.location.NAME}
+            </Text>
+          )}
         </View>
 
         <View>
@@ -236,7 +251,7 @@ const AlertScreen = () => {
           <View className="flex-row items-center justify-between">
             <Text style={{ fontSize: moderateScale(18) }} className="font-bold uppercase">
               Tide - {getTide(parsed.threshold.tide ?? 0)}
-              {parsed.threshold.tideTime ? ` at ${parsed.threshold.tideTime}` : ''}
+              {parsed.threshold.tideTime ? ` at ${getTime(parsed.threshold.tideTime.start!)}` : ''}
             </Text>
             <Tide tide={parsed.threshold.tide ?? 0} />
           </View>

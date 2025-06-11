@@ -3,6 +3,7 @@ import { router, useFocusEffect } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
+import { Menu, Button } from 'react-native-paper';
 import Animated, {
   useAnimatedStyle,
   withSpring,
@@ -12,32 +13,32 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 import { scale as scaleFunc, verticalScale, moderateScale } from 'react-native-size-matters';
-import { Menu, Button } from 'react-native-paper';
 
-import { getTide } from './alerts';
 import { alertStorage } from '../services/alertStorage';
 
 import Input from '~/components/Input';
 import Screen from '~/components/Layout/Screen';
+import LocationInput from '~/components/LocationInput';
 import SliderInput from '~/components/SliderInput';
-
-const TIDE_TIMES = [
-  { label: 'Select Time', value: '' },
-  { label: '6:00 AM', value: '6:00' },
-  { label: '9:00 AM', value: '9:00' },
-  { label: '12:00 PM', value: '12:00' },
-  { label: '3:00 PM', value: '15:00' },
-  { label: '6:00 PM', value: '18:00' },
-  { label: '9:00 PM', value: '21:00' },
-];
+import { Location } from '~/types/global';
+import { getTideLabel, TIDE_TIMES } from '~/utils/tide';
 
 const CreateAlert = () => {
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState<Location>({
+    CITY: '',
+    NAME: '',
+    ST: '',
+    LAT: 0,
+    LNG: 0,
+  });
   const [activity, setActivity] = useState('');
   const [maxWindSpeed, setMaxWindSpeed] = useState(0);
   const [maxWaveHeight, setMaxWaveHeight] = useState(0);
   const [tide, setTide] = useState(0);
-  const [tideTime, setTideTime] = useState('');
+  const [tideTime, setTideTime] = useState<{ start: number | null; end: number | null }>({
+    start: null,
+    end: null,
+  });
   const [menuVisible, setMenuVisible] = useState(false);
   const [saving, setSaving] = useState(false);
   const [totalAlerts, setTotalAlerts] = useState(0);
@@ -103,7 +104,7 @@ const CreateAlert = () => {
   };
 
   const handleCreate = async () => {
-    if (!location.trim()) return;
+    if (!location.LAT || !location.LNG) return;
     if (totalAlerts === 4) {
       Alert.alert('You have reached the maximum number of alerts, upgrade your plan');
       return;
@@ -127,12 +128,18 @@ const CreateAlert = () => {
       await Promise.all([playSuccessSound(), animateRipple()]);
 
       setActivity('');
-      setLocation('');
+      setLocation({
+        CITY: '',
+        NAME: '',
+        ST: '',
+        LAT: 0,
+        LNG: 0,
+      });
       setMaxWindSpeed(0);
       setMaxWaveHeight(0);
       setTide(0);
-      setTideTime('');
-      router.navigate('/alerts');
+      setTideTime({ start: null, end: null });
+      router.replace('/alerts');
     } catch (error) {
       console.error('Error creating alert:', error);
     } finally {
@@ -142,7 +149,7 @@ const CreateAlert = () => {
 
   const tap = Gesture.Tap().onStart(() => {
     console.log('tap');
-    if (!saving && location.trim()) {
+    if (!saving && !locationValid) {
       runOnJS(handleCreate)();
     }
   });
@@ -155,120 +162,129 @@ const CreateAlert = () => {
     transform: [{ translateY: translateY.value }],
   }));
 
+  const locationValid = location && location.NAME && location.LAT && location.LNG;
   return (
     <Screen>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}>
-        <View className="gap-y-5 px-4" style={{ paddingVertical: verticalScale(6) }}>
+      <View style={{ flex: 1 }}>
+        <View
+          className="relative flex-1 gap-y-5 px-4"
+          style={{ paddingVertical: verticalScale(6) }}>
           <Text
             style={{ fontSize: moderateScale(41) }}
             className="text-center font-extrabold uppercase text-white">
             ADD NEW ALERT
           </Text>
-          <View>
-            <Input
-              name="Location"
-              className="pt-1 text-center text-3xl font-semibold"
-              placeholder="city, state"
-              value={location}
-              onChangeText={setLocation}
-            />
+          <View className="flex-1">
+            <View className="absolute z-[999999] w-full">
+              <LocationInput onChange={setLocation} location={location} />
+            </View>
 
-            <Input
-              name="Activity"
-              className="text-center text-3xl font-semibold"
-              placeholder="activity"
-              value={activity}
-              onChangeText={setActivity}
-            />
-          </View>
-
-          <SliderInput
-            label="Wind"
-            value={maxWindSpeed}
-            max={20}
-            onChange={setMaxWindSpeed}
-            description={
-              <Text
-                style={{ fontSize: moderateScale(18) }}
-                className="text-right font-semibold uppercase">
-                Max Wind - {maxWindSpeed} MPH
-              </Text>
-            }
-          />
-
-          <SliderInput
-            label="Wave"
-            value={maxWaveHeight}
-            max={10}
-            onChange={setMaxWaveHeight}
-            description={
-              <Text
-                style={{ fontSize: moderateScale(18) }}
-                className="text-right font-semibold uppercase">
-                Swells - {maxWaveHeight} ft
-              </Text>
-            }
-          />
-
-          <SliderInput
-            label="Tide"
-            value={tide}
-            max={3}
-            onChange={setTide}
-            description={
-              <View className="gap-y-2">
-                <View className="flex-row items-center justify-between">
-                  <Text style={{ fontSize: moderateScale(18) }} className="font-semibold uppercase">
-                    {getTide(tide)}
+            <View className="mt-[120px] flex-1 justify-between">
+              <SliderInput
+                label="Wind"
+                value={maxWindSpeed}
+                max={20}
+                onChange={setMaxWindSpeed}
+                description={
+                  <Text
+                    style={{ fontSize: moderateScale(18) }}
+                    className="text-right font-semibold uppercase">
+                    Max Wind - {maxWindSpeed} MPH
                   </Text>
-                  <Menu
-                    visible={menuVisible}
-                    onDismiss={() => setMenuVisible(false)}
-                    anchor={
-                      <Button
-                        mode="outlined"
-                        onPress={() => setMenuVisible(true)}
-                        style={{ borderColor: '#000', borderWidth: 1 }}
-                        labelStyle={{ color: '#000', fontSize: moderateScale(14) }}>
-                        {tideTime
-                          ? TIDE_TIMES.find((t) => t.value === tideTime)?.label
-                          : 'Select Time'}
-                      </Button>
-                    }>
-                    {TIDE_TIMES.map((time) => (
-                      <Menu.Item
-                        key={time.value}
-                        onPress={() => {
-                          setTideTime(time.value);
-                          setMenuVisible(false);
-                        }}
-                        title={time.label}
-                      />
-                    ))}
-                  </Menu>
-                </View>
-              </View>
-            }
-          />
+                }
+              />
 
-          <View className="relative items-center">
-            <GestureDetector gesture={tap}>
-              <TouchableOpacity
-                style={{
-                  paddingHorizontal: scaleFunc(8),
-                  paddingVertical: verticalScale(4),
-                }}
-                className={`rounded-xl border-2 border-button bg-button ${saving ? 'opacity-50' : ''}`}
-                disabled={saving || !location.trim()}>
-                <Text
-                  style={{ fontSize: moderateScale(24) }}
-                  className="text-center font-semibold uppercase text-white">
-                  {saving ? 'Creating...' : 'Save'}
-                </Text>
-              </TouchableOpacity>
-            </GestureDetector>
+              <SliderInput
+                label="Wave"
+                value={maxWaveHeight}
+                max={10}
+                onChange={setMaxWaveHeight}
+                description={
+                  <Text
+                    style={{ fontSize: moderateScale(18) }}
+                    className="text-right font-semibold uppercase">
+                    Swells - {maxWaveHeight} ft
+                  </Text>
+                }
+              />
+
+              <SliderInput
+                label="Tide"
+                value={tide}
+                max={3}
+                onChange={setTide}
+                description={
+                  <View className="gap-y-2">
+                    <View className="flex-row items-center justify-between">
+                      <Menu
+                        visible={menuVisible}
+                        onDismiss={() => setMenuVisible(false)}
+                        anchor={
+                          <Button
+                            mode="outlined"
+                            onPress={() => setMenuVisible(true)}
+                            style={{
+                              borderColor: '#000',
+                              borderWidth: 1,
+                              backgroundColor: '#e0f7fa',
+                              //borderRadius: 8,
+                            }}
+                            labelStyle={{
+                              color: '#000',
+                              fontSize: moderateScale(14),
+                            }}>
+                            {tideTime.start !== null && tideTime.end !== null
+                              ? TIDE_TIMES.find(
+                                  (t) => t.start === tideTime.start && t.end === tideTime.end
+                                )?.label
+                              : 'Select Tide Time'}
+                          </Button>
+                        }>
+                        {TIDE_TIMES.map((time) => (
+                          <Menu.Item
+                            key={time.label}
+                            onPress={() => {
+                              setTideTime({ start: time.start, end: time.end });
+                              setMenuVisible(false);
+                            }}
+                            title={time.label}
+                            titleStyle={{
+                              fontSize: moderateScale(14),
+                              fontWeight: 'bold', // Make dropdown item text bold
+                              fontStyle: 'italic', // Italic style (optional)
+                              fontFamily: 'System', // Or your custom font
+                            }}
+                          />
+                        ))}
+                      </Menu>
+                      <Text
+                        style={{ fontSize: moderateScale(18) }}
+                        className="font-semibold uppercase">
+                        {getTideLabel(tide)}
+                      </Text>
+                    </View>
+                  </View>
+                }
+              />
+
+              <View className="relative items-center">
+                <GestureDetector gesture={tap}>
+                  <TouchableOpacity
+                    style={{
+                      paddingHorizontal: scaleFunc(8),
+                      paddingVertical: verticalScale(4),
+                    }}
+                    className={`rounded-xl border-2 border-button bg-button ${saving ? 'opacity-50' : ''}`}
+                    disabled={saving || !locationValid}>
+                    <Text
+                      style={{ fontSize: moderateScale(24) }}
+                      className="text-center font-semibold uppercase text-white">
+                      {saving ? 'Creating...' : 'Save'}
+                    </Text>
+                  </TouchableOpacity>
+                </GestureDetector>
+              </View>
+            </View>
           </View>
         </View>
 
@@ -285,7 +301,7 @@ const CreateAlert = () => {
             },
           ]}
         />
-      </KeyboardAvoidingView>
+      </View>
     </Screen>
   );
 };
