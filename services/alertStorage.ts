@@ -7,7 +7,7 @@ import { Location } from '~/types/global';
 export type Alert = {
   id: string;
   location: Location;
-  activity: string;
+
   threshold: {
     maxWindSpeed: number;
     maxWaveHeight: number;
@@ -50,11 +50,11 @@ export const alertStorage = {
       };
 
       await AsyncStorage.setItem(ALERTS_STORAGE_KEY, JSON.stringify([...alerts, newAlert]));
-
+      const location = alert.location.NAME || `${alert.location.CITY}, ${alert.location.ST}`;
       if (alert.active) {
         const notificationId = await notificationsService.scheduleLocalNotification(
-          `New Alert: ${alert.location}`,
-          `Activity: ${alert.activity}\nMax Wind Speed: ${alert.threshold.maxWindSpeed}\nMax Wave Height: ${alert.threshold.maxWaveHeight}\nTide: ${alert.threshold.tide}${alert.threshold.tideTime ? ` - ${alert.threshold.tideTime}` : ''}`,
+          `New Alert: ${location}`,
+          `Max Wind Speed: ${alert.threshold.maxWindSpeed}\nMax Wave Height: ${alert.threshold.maxWaveHeight}\nTide: ${alert.threshold.tide}${alert.threshold.tideTime ? ` - ${alert.threshold.tideTime}` : ''}`,
           newAlert
         );
         newAlert.notificationId = notificationId;
@@ -81,10 +81,11 @@ export const alertStorage = {
       const updatedAlerts = alerts.map((a) => (a.id === alert.id ? alert : a));
       await AsyncStorage.setItem(ALERTS_STORAGE_KEY, JSON.stringify(updatedAlerts));
 
+      const location = alert.location.NAME || `${alert.location.CITY}, ${alert.location.ST}`;
       if (alert.active) {
         const notificationId = await notificationsService.scheduleLocalNotification(
-          `Updated Alert: ${alert.location}`,
-          `Activity: ${alert.activity}\nMax Wind Speed: ${alert.threshold.maxWindSpeed}\nMax Wave Height: ${alert.threshold.maxWaveHeight}\nTide: ${alert.threshold.tide}`,
+          `Updated Alert: ${location}`,
+          ` \nMax Wind Speed: ${alert.threshold.maxWindSpeed}\nMax Wave Height: ${alert.threshold.maxWaveHeight}\nTide: ${alert.threshold.tide}`,
           alert
         );
         alert.notificationId = notificationId;
