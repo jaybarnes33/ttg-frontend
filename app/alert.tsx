@@ -192,7 +192,7 @@ const AlertScreen = () => {
           <Text
             className={clsx([
               'text-center font-bold uppercase',
-              name.length > 13 ? 'text-3xl' : 'text-[34px]',
+              name.length > 12 ? 'text-[25px]' : 'text-4xl',
             ])}>
             {name}
           </Text>

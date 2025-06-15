@@ -36,8 +36,8 @@ const LocationInput = ({
       <View ref={inputRef} className="gap-y-2 border-2 border-black bg-white py-2">
         <TextInput
           className={clsx(
-            'pt-1 text-center  font-semibold uppercase',
-            keyword.length > 12 ? 'text-3xl' : 'text-4xl'
+            'pt-1 text-center   uppercase',
+            keyword.length > 12 ? 'text-[25px] font-bold' : 'text-4xl font-semibold'
           )}
           placeholderTextColor="#bbb"
           placeholder="city"
@@ -57,7 +57,13 @@ const LocationInput = ({
         />
 
         {location.NAME && (
-          <Text className="text-center text-3xl font-semibold">{location?.NAME}</Text>
+          <Text
+            className={clsx([
+              'text-center font-semibold',
+              location?.NAME.length > 12 ? 'text-2xl' : 'text-4xl',
+            ])}>
+            {location?.NAME}
+          </Text>
         )}
       </View>
 

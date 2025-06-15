@@ -150,7 +150,7 @@ const Alerts = () => {
           <Text
             className={clsx([
               'text-center  font-bold uppercase',
-              name.length > 10 ? 'text-3xl' : 'text-4xl',
+              name.length > 12 ? 'text-[25px]' : 'text-4xl',
             ])}>
             {location?.CITY}, {location?.ST}
           </Text>

@@ -1,6 +1,6 @@
 import { Audio } from 'expo-av';
 import { router, useFocusEffect } from 'expo-router';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { Menu, Button } from 'react-native-paper';
@@ -16,7 +16,6 @@ import { scale as scaleFunc, verticalScale, moderateScale } from 'react-native-s
 
 import { alertStorage } from '../services/alertStorage';
 
-import Input from '~/components/Input';
 import Screen from '~/components/Layout/Screen';
 import LocationInput from '~/components/LocationInput';
 import SliderInput from '~/components/SliderInput';
@@ -31,7 +30,6 @@ const CreateAlert = () => {
     LAT: 0,
     LNG: 0,
   });
-  const [activity, setActivity] = useState('');
   const [maxWindSpeed, setMaxWindSpeed] = useState(0);
   const [maxWaveHeight, setMaxWaveHeight] = useState(0);
   const [tide, setTide] = useState(0);
@@ -121,13 +119,11 @@ const CreateAlert = () => {
           tideTime,
         },
         active: true,
-        activity,
       });
 
       // Run sound and animation in parallel
       await Promise.all([playSuccessSound(), animateRipple()]);
 
-      setActivity('');
       setLocation({
         CITY: '',
         NAME: '',
@@ -163,6 +159,7 @@ const CreateAlert = () => {
   }));
 
   const locationValid = location && location.NAME && location.LAT && location.LNG;
+  const [height, setHeight] = useState(40);
   return (
     <Screen>
       <View style={{ flex: 1 }}>
@@ -175,11 +172,22 @@ const CreateAlert = () => {
             ADD NEW ALERT
           </Text>
           <View className="flex-1">
-            <View className="absolute z-[999999] w-full">
+            <View
+              onLayout={(event) => {
+                const { height } = event.nativeEvent.layout;
+
+                setHeight(height > 200 ? height - 200 : height);
+              }}
+              className="absolute z-[999999] w-full">
               <LocationInput onChange={setLocation} location={location} />
             </View>
 
-            <View className="mt-[120px] flex-1 justify-between">
+            <View
+              className="flex-1 justify-between "
+              style={{
+                marginTop: 20,
+                paddingTop: height,
+              }}>
               <SliderInput
                 label="Wind"
                 value={maxWindSpeed}
@@ -214,8 +222,8 @@ const CreateAlert = () => {
                 max={3}
                 onChange={setTide}
                 description={
-                  <View className="gap-y-2">
-                    <View className="flex-row items-center justify-between">
+                  <View>
+                    <View className="flex-row items-center justify-between pb-1">
                       <Menu
                         visible={menuVisible}
                         onDismiss={() => setMenuVisible(false)}
