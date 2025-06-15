@@ -175,6 +175,7 @@ const AlertScreen = () => {
   return (
     <Screen hideArrows>
       <ScrollView
+        contentContainerStyle={{ paddingBottom: 30 }}
         style={{
           marginHorizontal: scale(16),
           marginVertical: verticalScale(8),
