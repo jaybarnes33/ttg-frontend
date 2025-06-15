@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, Alert, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, Animated, ScrollView } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { Audio } from 'expo-av';
 
@@ -174,11 +174,11 @@ const AlertScreen = () => {
 
   return (
     <Screen hideArrows>
-      <View
+      <ScrollView
         style={{
           marginHorizontal: scale(16),
           marginVertical: verticalScale(8),
-          paddingVertical: scale(8),
+          paddingVertical: scale(16),
           paddingHorizontal: scale(16),
           gap: verticalScale(5),
         }}
@@ -278,7 +278,7 @@ const AlertScreen = () => {
             <Sun />
           </View>
         </View>
-      </View>
+      </ScrollView>
 
       <View
         style={{ paddingHorizontal: scale(16) }}
