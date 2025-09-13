@@ -78,7 +78,7 @@ const Screen = ({
           <View className="relative mx-auto items-center justify-center">
             {pathname === '/alert' && <AnimatedCircles isActive={pathname === '/alert'} />}
             <Animated.View className="rounded-full " style={{ transform: [{ scale: pulseAnim }] }}>
-              <Logo width={scale(100)} height={scale(100.3)} />
+              <Logo />
             </Animated.View>
           </View>
 

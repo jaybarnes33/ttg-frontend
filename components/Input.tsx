@@ -26,8 +26,9 @@ const Input = (props: TextInputProps & { name?: string; border?: boolean; size?:
           {...props}
           ref={inputRef}
           style={{
-            minHeight: verticalScale(48),
             paddingVertical: verticalScale(8),
+            paddingHorizontal: scale(8),
+            fontSize: props.size ? moderateScale(props.size) : moderateScale(18),
             ...(props.style as object),
           }}
           className={clsx(['w-full bg-white px-2', props.className])}
@@ -52,9 +53,7 @@ const Input = (props: TextInputProps & { name?: string; border?: boolean; size?:
         )}
       </View>
       {props.name && (
-        <Text
-          style={{ fontSize: moderateScale(18) }}
-          className="text-center font-semibold uppercase">
+        <Text style={{ fontSize: moderateScale(16) }} className="text-center font-bold uppercase">
           {props.name}
         </Text>
       )}

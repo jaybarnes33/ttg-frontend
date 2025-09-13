@@ -1,20 +1,21 @@
 import clsx from 'clsx';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { verticalScale, scale, moderateScale } from 'react-native-size-matters';
+
+import Input from './Input';
 
 import locations from '~/locations.json'; // Make sure this path is correct
 import { Location } from '~/types/global';
 
 const LocationInput = ({
   onChange,
-  location,
 }: {
   onChange: (location: Location) => void;
   location: Location;
 }) => {
   const [keyword, setKeyword] = useState('');
   const [showResults, setShowResults] = useState(false);
-  const inputRef = useRef<View>(null);
   // Filter locations by keyword (case-insensitive, matches city, name, or state)
   const filtered =
     keyword.length > 1
@@ -33,42 +34,30 @@ const LocationInput = ({
 
   return (
     <View className="relative">
-      <View ref={inputRef} className="gap-y-2 border-2 border-black bg-white py-2">
-        <TextInput
-          className={clsx(
-            'pt-1 text-center   uppercase',
-            keyword.length > 12 ? 'text-[25px] font-bold' : 'text-4xl font-semibold'
-          )}
-          placeholderTextColor="#bbb"
-          placeholder="city"
-          value={keyword.toUpperCase()}
-          onChangeText={(text) => {
-            setKeyword(text);
+      <Input
+        className={clsx(' text-center  font-bold uppercase')}
+        size={moderateScale(28)}
+        border
+        placeholderTextColor="#bbb"
+        placeholder="city"
+        value={keyword.toUpperCase()}
+        onChangeText={(text) => {
+          setKeyword(text);
+          setShowResults(true);
+          handleClear();
+        }}
+        name="City-State"
+        onFocus={() => {
+          if (keyword.length > 1) {
             setShowResults(true);
-            handleClear();
-          }}
-          onFocus={() => {
-            if (keyword.length > 1) {
-              setShowResults(true);
-            }
-          }}
-          autoCorrect={false}
-          autoCapitalize="characters"
-        />
-
-        {location.NAME && (
-          <Text
-            className={clsx([
-              'text-center font-semibold',
-              location?.NAME.length > 12 ? 'text-2xl' : 'text-4xl',
-            ])}>
-            {location?.NAME}
-          </Text>
-        )}
-      </View>
+          }
+        }}
+        autoCorrect={false}
+        autoCapitalize="characters"
+      />
 
       {showResults && filtered.length > 0 && (
-        <View className="    w-full rounded-b-lg bg-white shadow-lg">
+        <View className=" -mt-10   w-full rounded-b-lg bg-white shadow-lg">
           <View className="flex-row items-center justify-between border-b border-gray-200">
             <Text className="flex-1 px-3 py-2 text-base font-semibold text-gray-700">
               {filtered.length} results for "{keyword}"
@@ -86,11 +75,10 @@ const LocationInput = ({
           </View>
           <ScrollView
             style={{
-              maxHeight: 200,
-              borderRadius: 8,
-              marginTop: 4,
+              maxHeight: verticalScale(200),
+              borderRadius: scale(8),
+              marginTop: verticalScale(4),
               position: 'relative',
-
               zIndex: 9999999,
             }}>
             {filtered.slice(0, 10).map((item) => (

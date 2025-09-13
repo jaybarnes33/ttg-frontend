@@ -4,6 +4,7 @@ import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
+import Input from '~/components/Input';
 
 import Screen from '~/components/Layout/Screen';
 import SliderInput from '~/components/SliderInput';
@@ -145,21 +146,35 @@ const Alerts = () => {
     const location = activeItem?.location;
     const name = `${location?.CITY}, ${location?.ST}`;
     return (
-      <View className="flex-1 border-y border-teal-300 bg-[#d1e8e2] px-4 py-2">
-        <View className="relative z-10 -mt-7 items-center justify-center gap-y-2 border-2 border-black  bg-white py-2">
-          <Text
-            className={clsx([
-              'text-center  font-bold uppercase',
-              name.length > 12 ? 'text-[25px]' : 'text-4xl',
-            ])}>
-            {location?.CITY}, {location?.ST}
-          </Text>
-          {location?.NAME && (
-            <Text className="text-center text-2xl font-semibold">{location?.NAME}</Text>
-          )}
-        </View>
-
-        <View className="mt-3 flex-1 gap-4">
+      <View
+        className="h-[75%]  gap-y-2 border-y border-teal-300 bg-[#d1e8e2] px-4 py-2"
+        style={{
+          height: '75%',
+          paddingHorizontal: moderateScale(16),
+          paddingVertical: moderateScale(8),
+          gap: moderateScale(8),
+        }}>
+        <View
+          className=" -mt-10 flex-1 gap-2 "
+          style={{ marginTop: moderateScale(-40), gap: moderateScale(8) }}>
+          <View>
+            <Input
+              value={name}
+              className={clsx(['text-center  font-bold uppercase'])}
+              style={{ fontSize: moderateScale(name.length > 12 ? 25 : 32) }}
+              name="City-State"
+              border
+              readOnly
+            />
+            <Input
+              value={location?.NAME}
+              className={clsx(['text-center  font-bold uppercase'])}
+              style={{ fontSize: moderateScale(name.length > 12 ? 25 : 32) }}
+              name="location"
+              border
+              readOnly
+            />
+          </View>
           <SliderInput
             disabled={!editMode}
             max={20}
@@ -174,7 +189,9 @@ const Alerts = () => {
               }
             }}
             description={
-              <Text className="ml-2 text-right text-lg font-semibold uppercase">
+              <Text
+                className="ml-2 text-right text-lg font-semibold uppercase"
+                style={{ fontSize: moderateScale(18) }}>
                 Max Wind - {activeItem?.threshold.maxWindSpeed} MPH
               </Text>
             }
@@ -194,7 +211,9 @@ const Alerts = () => {
               }
             }}
             description={
-              <Text className="ml-2 text-right text-lg font-semibold uppercase">
+              <Text
+                className="ml-2 text-right text-lg font-semibold uppercase"
+                style={{ fontSize: moderateScale(18) }}>
                 Swells - {activeItem?.threshold.maxWaveHeight} ft
               </Text>
             }
@@ -204,7 +223,9 @@ const Alerts = () => {
             disabled={!editMode}
             max={3}
             description={
-              <Text className="ml-2 text-right text-lg font-semibold uppercase">
+              <Text
+                className="ml-2 text-right text-lg font-semibold uppercase"
+                style={{ fontSize: moderateScale(18) }}>
                 Tide: {getTide(activeItem?.threshold.tide ?? 0)}
               </Text>
             }
@@ -220,12 +241,6 @@ const Alerts = () => {
             }}
           />
         </View>
-        <TouchableOpacity
-          onPress={() =>
-            navigate({ pathname: '/alert', params: { alertData: JSON.stringify(activeItem) } })
-          }>
-          <Text>Preview</Text>
-        </TouchableOpacity>
       </View>
     );
   };
@@ -249,13 +264,27 @@ const Alerts = () => {
           </View>
 
           <TouchableOpacity
-            className="absolute bottom-6 right-6 h-14 w-14 items-center justify-center rounded-full bg-black shadow-lg"
+            style={{
+              position: 'absolute',
+              bottom: moderateScale(24),
+              right: moderateScale(24),
+              height: moderateScale(56),
+              width: moderateScale(56),
+              borderRadius: moderateScale(28),
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'black',
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.3,
+              shadowRadius: 4,
+            }}
             onPress={() => navigate('/alert-form')}>
-            <MaterialIcons name="add" size={30} color="white" />
+            <MaterialIcons name="add" size={moderateScale(30)} color="white" />
           </TouchableOpacity>
         </>
       ) : (
-        <>
+        <View className="flex-1">
           <View className="items-center py-4">
             <Text style={{ fontSize: moderateScale(41) }} className="font-extrabold text-white">
               ALERTS
@@ -264,7 +293,7 @@ const Alerts = () => {
 
           {renderAlert()}
 
-          <View className="mt-auto">
+          <View>
             {/* Indicators */}
             <View className="flex-row items-center justify-between gap-4 px-4 py-4">
               <TouchableOpacity onPress={goToPrevious} disabled={alerts.length <= 1}>
@@ -324,7 +353,7 @@ const Alerts = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </>
+        </View>
       )}
     </Screen>
   );

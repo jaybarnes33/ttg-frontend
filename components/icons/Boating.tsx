@@ -3,8 +3,9 @@ import { Animated, Easing } from 'react-native';
 import Svg, { Image } from 'react-native-svg';
 
 import { IconProps } from './types';
+import { moderateScale } from 'react-native-size-matters';
 
-export const Boating = ({ size = 357, color = '#000' }: IconProps) => {
+export const Boating = ({ size = moderateScale(300), color = '#000' }: IconProps) => {
   // Create animated value for horizontal movement
   const translateX = React.useRef(new Animated.Value(0)).current;
 

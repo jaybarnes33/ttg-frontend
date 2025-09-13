@@ -21,6 +21,8 @@ import LocationInput from '~/components/LocationInput';
 import SliderInput from '~/components/SliderInput';
 import { Location } from '~/types/global';
 import { getTideLabel, TIDE_TIMES } from '~/utils/tide';
+import Input from '~/components/Input';
+import clsx from 'clsx';
 
 const CreateAlert = () => {
   const [location, setLocation] = useState<Location>({
@@ -162,140 +164,168 @@ const CreateAlert = () => {
   const [height, setHeight] = useState(40);
   return (
     <Screen>
-      <View style={{ flex: 1 }}>
-        <View
-          className="relative flex-1 gap-y-5 px-4"
-          style={{ paddingVertical: verticalScale(6) }}>
-          <Text
-            style={{ fontSize: moderateScale(41) }}
-            className="text-center font-extrabold uppercase text-white">
-            ADD NEW ALERT
-          </Text>
-          <View className="flex-1">
-            <View
-              onLayout={(event) => {
-                const { height } = event.nativeEvent.layout;
+      <View
+        style={{
+          flex: 1,
+          paddingHorizontal: moderateScale(16),
+          paddingVertical: verticalScale(10),
+          gap: verticalScale(10),
+        }}>
+        <Text
+          style={{
+            fontSize: moderateScale(35),
+            textAlign: 'center',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            color: 'white',
+            marginBottom: verticalScale(10),
+          }}>
+          ADD NEW ALERT
+        </Text>
 
-                setHeight(height > 200 ? height - 200 : height);
-              }}
-              className="absolute z-[999999] w-full">
-              <LocationInput onChange={setLocation} location={location} />
-            </View>
+        <LocationInput onChange={setLocation} location={location} />
+        <Input
+          name="location"
+          value={location.NAME}
+          style={{
+            fontSize: moderateScale(25),
+            textAlign: 'center',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+          }}
+          readOnly
+          border
+        />
 
-            <View
-              className="flex-1 justify-between "
-              style={{
-                marginTop: 20,
-                paddingTop: height,
-              }}>
-              <SliderInput
-                label="Wind"
-                value={maxWindSpeed}
-                max={20}
-                onChange={setMaxWindSpeed}
-                description={
-                  <Text
-                    style={{ fontSize: moderateScale(18) }}
-                    className="text-right font-semibold uppercase">
-                    Max Wind - {maxWindSpeed} MPH
-                  </Text>
-                }
-              />
-
-              <SliderInput
-                label="Wave"
-                value={maxWaveHeight}
-                max={10}
-                onChange={setMaxWaveHeight}
-                description={
-                  <Text
-                    style={{ fontSize: moderateScale(18) }}
-                    className="text-right font-semibold uppercase">
-                    Swells - {maxWaveHeight} ft
-                  </Text>
-                }
-              />
-
-              <SliderInput
-                label="Tide"
-                value={tide}
-                max={3}
-                onChange={setTide}
-                description={
-                  <View>
-                    <View className="flex-row items-center justify-between pb-1">
-                      <Menu
-                        visible={menuVisible}
-                        onDismiss={() => setMenuVisible(false)}
-                        anchor={
-                          <Button
-                            mode="outlined"
-                            onPress={() => setMenuVisible(true)}
-                            style={{
-                              borderColor: '#000',
-                              borderWidth: 1,
-                              backgroundColor: '#e0f7fa',
-                              //borderRadius: 8,
-                            }}
-                            labelStyle={{
-                              color: '#000',
-                              fontSize: moderateScale(14),
-                            }}>
-                            {tideTime.start !== null && tideTime.end !== null
-                              ? TIDE_TIMES.find(
-                                  (t) => t.start === tideTime.start && t.end === tideTime.end
-                                )?.label
-                              : 'Select Tide Time'}
-                          </Button>
-                        }>
-                        {TIDE_TIMES.map((time) => (
-                          <Menu.Item
-                            key={time.label}
-                            onPress={() => {
-                              setTideTime({ start: time.start, end: time.end });
-                              setMenuVisible(false);
-                            }}
-                            title={time.label}
-                            titleStyle={{
-                              fontSize: moderateScale(14),
-                              fontWeight: 'bold', // Make dropdown item text bold
-                              fontStyle: 'italic', // Italic style (optional)
-                              fontFamily: 'System', // Or your custom font
-                            }}
-                          />
-                        ))}
-                      </Menu>
-                      <Text
-                        style={{ fontSize: moderateScale(18) }}
-                        className="font-semibold uppercase">
-                        {getTideLabel(tide)}
-                      </Text>
-                    </View>
-                  </View>
-                }
-              />
-
-              <View className="relative items-center">
-                <GestureDetector gesture={tap}>
-                  <TouchableOpacity
-                    style={{
-                      paddingHorizontal: scaleFunc(8),
-                      paddingVertical: verticalScale(4),
-                    }}
-                    className={`rounded-xl border-2 border-button bg-button ${saving ? 'opacity-50' : ''}`}
-                    disabled={saving || !locationValid}>
-                    <Text
-                      style={{ fontSize: moderateScale(24) }}
-                      className="text-center font-semibold uppercase text-white">
-                      {saving ? 'Creating...' : 'Save'}
-                    </Text>
-                  </TouchableOpacity>
-                </GestureDetector>
+        <View>
+          <SliderInput
+            label="Wind"
+            value={maxWindSpeed}
+            max={20}
+            onChange={setMaxWindSpeed}
+            description={
+              <Text
+                style={{
+                  fontSize: moderateScale(18),
+                  textAlign: 'right',
+                  fontWeight: '600',
+                  textTransform: 'uppercase',
+                }}>
+                Max Wind - {maxWindSpeed} MPH
+              </Text>
+            }
+          />
+          <SliderInput
+            label="Wave"
+            value={maxWaveHeight}
+            max={10}
+            onChange={setMaxWaveHeight}
+            description={
+              <Text
+                style={{
+                  fontSize: moderateScale(18),
+                  textAlign: 'right',
+                  fontWeight: '600',
+                  textTransform: 'uppercase',
+                }}>
+                Swells - {maxWaveHeight} ft
+              </Text>
+            }
+          />
+          <SliderInput
+            label="Tide"
+            value={tide}
+            max={3}
+            onChange={setTide}
+            description={
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginTop: verticalScale(10),
+                  paddingBottom: verticalScale(4),
+                }}>
+                <Menu
+                  visible={menuVisible}
+                  onDismiss={() => setMenuVisible(false)}
+                  anchor={
+                    <Button
+                      mode="outlined"
+                      onPress={() => setMenuVisible(true)}
+                      style={{
+                        borderColor: '#000',
+                        borderWidth: 1,
+                        backgroundColor: '#e0f7fa',
+                      }}
+                      labelStyle={{
+                        color: '#000',
+                        fontSize: moderateScale(14),
+                      }}>
+                      {tideTime.start !== null && tideTime.end !== null
+                        ? TIDE_TIMES.find(
+                            (t) => t.start === tideTime.start && t.end === tideTime.end
+                          )?.label
+                        : 'Select Tide Time'}
+                    </Button>
+                  }>
+                  {TIDE_TIMES.map((time) => (
+                    <Menu.Item
+                      key={time.label}
+                      onPress={() => {
+                        setTideTime({ start: time.start, end: time.end });
+                        setMenuVisible(false);
+                      }}
+                      title={time.label}
+                      titleStyle={{
+                        fontSize: moderateScale(14),
+                        fontWeight: 'bold',
+                        fontStyle: 'italic',
+                        fontFamily: 'System',
+                      }}
+                    />
+                  ))}
+                </Menu>
+                <Text
+                  style={{
+                    fontSize: moderateScale(18),
+                    fontWeight: '600',
+                    textTransform: 'uppercase',
+                  }}>
+                  {getTideLabel(tide)}
+                </Text>
               </View>
-            </View>
-          </View>
+            }
+          />
         </View>
 
+        <View style={{ alignItems: 'center', marginTop: verticalScale(16) }}>
+          <GestureDetector gesture={tap}>
+            <TouchableOpacity
+              style={{
+                paddingHorizontal: scaleFunc(8),
+                paddingVertical: verticalScale(4),
+                borderRadius: moderateScale(12),
+                borderWidth: 2,
+                borderColor: '#00bcd4',
+                backgroundColor: '#00bcd4',
+                opacity: saving || !locationValid ? 0.5 : 1,
+                width: '60%',
+              }}
+              disabled={saving || !locationValid}>
+              <Text
+                style={{
+                  fontSize: moderateScale(24),
+                  textAlign: 'center',
+                  fontWeight: '600',
+                  textTransform: 'uppercase',
+                  color: 'white',
+                }}>
+                {saving ? 'Creating...' : 'Save'}
+              </Text>
+            </TouchableOpacity>
+          </GestureDetector>
+        </View>
         <Animated.View
           style={[
             rippleStyle,

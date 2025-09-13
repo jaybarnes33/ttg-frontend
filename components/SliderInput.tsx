@@ -23,13 +23,13 @@ const SliderInput = ({
       {description}
       <View style={{ gap: scale(4) }} className="w-full flex-row items-center">
         <Text
-          style={{ fontSize: moderateScale(24), width: moderateScale(70) }}
+          style={{ fontSize: moderateScale(24), width: scale(70) }}
           className="font-semibold uppercase">
           {label}
         </Text>
 
         <Slider
-          style={{ flex: 1 }}
+          style={{ flex: 1, height: verticalScale(20) }}
           minimumValue={0}
           maximumValue={max}
           value={value}

@@ -49,7 +49,7 @@ const Home = () => {
           </View>
         ))}
       </View>
-      <View className="flex-1 items-center">
+      <View className="absolute -bottom-10 w-full items-center">
         <Boating />
       </View>
       <View className="flex-row items-center justify-between px-6">
