@@ -285,7 +285,7 @@ const Alerts = () => {
         </>
       ) : (
         <View className="flex-1">
-          <View className="items-center py-4">
+          <View className="items-center py-4 pb-6">
             <Text style={{ fontSize: moderateScale(41) }} className="font-extrabold text-white">
               ALERTS
             </Text>
